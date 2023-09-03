@@ -1,7 +1,0 @@
-dbfread
-fiona
-numpy
-pandas
-rasterio
-scikit-learn
-scipy
