@@ -7,11 +7,11 @@
 [![PyPI version](https://badge.fury.io/py/scikeo.svg)](https://badge.fury.io/py/scikeo)
 [![Youtube](https://img.shields.io/badge/YouTube-Channel-red)]()
 [![Downloads](https://static.pepy.tech/badge/scikeo)](https://pepy.tech/project/scikeo)
-[![Downloads](https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/docs-passing-brightgreen.svg)]()
+[![Downloads](https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/docs-passing-brightgreen.svg)]()
 [![tests](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml/badge.svg)](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml)
 
 
-<img src="https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/scikit-eo_logo.jpg" align="right" width="220"/>
+<img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/scikit-eo_logo.jpg" align="right" width="220"/>
 
 <!-- #region -->
 # Introduction
@@ -57,7 +57,7 @@ pip install scikeo
 It is also possible to install the latest development version directly from the GitHub repository with:
 
 ```python
-pip install git+https://github.com/ytarazona/scikit-eo
+pip install git+https://github.com/yotarazona/scikit-eo
 ```
 <!-- #endregion -->
 
@@ -109,7 +109,7 @@ df = pd.DataFrame(iter(endm))
 df.head()
 ```
 <p align="left">
-  <a href="https://github.com/ytarazona/scikit-eo"><img src="https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/endembers.png" alt ="header" width = 75%>
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/endembers.png" alt ="header" width = 75%>
 </a>
 </p>
 
@@ -153,7 +153,7 @@ svm_class.get('Confusion_Matrix')
 ```
 
 <p align="left">
-  <a href="https://github.com/ytarazona/scikit-eo"><img src="https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/confusion_matrix.png" alt ="header" width = 80%>
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/confusion_matrix.png" alt ="header" width = 80%>
 </a>
 </p>
 
@@ -181,7 +181,7 @@ axes[1].grid(False)
 ```
 
 <p align="left">
-  <a href="https://github.com/ytarazona/scikit-eo"><img src="https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/classification.png" alt ="header" width = "750">
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/classification.png" alt ="header" width = "750">
 </a>
 </p>
 
