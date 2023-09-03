@@ -7,24 +7,24 @@
 [![PythonVersion]( https://img.shields.io/badge/python-3.5%20%7C%203.6%20%7C%203.7%20%7C%203.8-green)]()
 [![PyPI version](https://badge.fury.io/py/scikeo.svg)](https://badge.fury.io/py/scikeo)
 [![Youtube](https://img.shields.io/badge/YouTube-Channel-red)]()
-[![Downloads](https://pepy.tech/badge/scikeo)](https://pepy.tech/project/scikeo)
-[![Downloads](https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/docs-passing-brightgreen.svg)]()
-[![tests](https://github.com/ytarazona/scikit-eo/actions/workflows/tests.yml/badge.svg)](https://github.com/ytarazona/scikit-eo/actions/workflows/tests.yml)
+[![Downloads](https://static.pepy.tech/badge/scikeo)](https://pepy.tech/project/scikeo)
+[![Downloads](https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/docs-passing-brightgreen.svg)]()
+[![tests](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml/badge.svg)](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml)
 
 <p align="center">
-  <a href="https://github.com/ytarazona/scikit-eo"><img src="https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/scikit-eo_logo.jpg" alt="header" width = '180'></a>
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/scikit-eo_logo.jpg" alt="header" width = '180'></a>
 </p>
 
 
 ### Links of interest:
 
-- **GitHub repo**: <https://github.com/ytarazona/scikit-eo>
-- **Documentation**: <https://ytarazona.github.io/scikit-eo/>
+- **GitHub repo**: <https://github.com/yotarazona/scikit-eo>
+- **Documentation**: <https://yotarazona.github.io/scikit-eo/>
 - **PyPI**: <https://pypi.org/project/scikeo/>
-- **Notebooks examples**: <https://github.com/ytarazona/scikit-eo/tree/main/examples>
-- **Google Colab examples**: <https://github.com/ytarazona/scikit-eo/tree/main/examples>
+- **Notebooks examples**: <https://github.com/yotarazona/scikit-eo/tree/main/examples>
+- **Google Colab examples**: <https://github.com/yotarazona/scikit-eo/tree/main/examples>
 - **Free software**: [Apache 2.0](https://opensource.org/license/apache-2-0/)
-- **Tutorials: step by step**: <https://ytarazona.github.io/scikit-eo/tutorials/>
+- **Tutorials: step by step**: <https://yotarazona.github.io/scikit-eo/tutorials/>
 
 # **Introduction**
 
@@ -71,7 +71,7 @@ pip install scikeo
 It is also possible to install the latest development version directly from the GitHub repository with:
 
 ```python
-pip install git+https://github.com/ytarazona/scikit-eo
+pip install git+https://github.com/yotarazona/scikit-eo
 ```
 <!-- #endregion -->
 
