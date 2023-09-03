@@ -1,8 +1,8 @@
 site_name: scikit-eo
 
-site_url: https://ytarazona.github.io/scikit-eo
+site_url: https://yotarazona.github.io/scikit-eo
 
-repo_url: https://ytarazona.github.io/scikit-eo
+repo_url: https://yotarazona.github.io/scikit-eo
 
 theme:
     palette:
@@ -66,7 +66,7 @@ nav:
     - Contributors: contributors.md
     - Contributing: contributing.md
     - FAQ: faq.md
-    - Report Issues: https://github.com/ytarazona/scikit-eo/issues
+    - Report Issues: https://github.com/yotarazona/scikit-eo/issues
     - API Reference:
           - mla module: mla.md
           - calmla module: calmla.md
