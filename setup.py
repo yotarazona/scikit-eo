@@ -24,8 +24,8 @@ setup_requirements = [ ]
 test_requirements = [ ]
 
 setup(
-    author="Yonatan Tarazona Coronel",
-    author_email='geoyons@gmail.com',
+    author="Yonatan Tarazona",
+    author_email='ytarazona09@gmail.com',
     python_requires='>=3.5',
     classifiers=[
         #'Development Status ::  2 - Pre-Alpha',
@@ -51,7 +51,7 @@ setup(
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/ytarazona/scikit-eo',
+    url='https://github.com/yotarazona/scikit-eo',
     version='0.2.16',
     zip_safe=False,
 )
