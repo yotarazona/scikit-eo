@@ -6,8 +6,8 @@
 [![PythonVersion]( https://img.shields.io/badge/python-3.5%20%7C%203.6%20%7C%203.7%20%7C%203.8-green)]()
 [![PyPI version](https://badge.fury.io/py/scikeo.svg)](https://badge.fury.io/py/scikeo)
 [![Youtube](https://img.shields.io/badge/YouTube-Channel-red)]()
-[![Downloads](https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/docs-passing-brightgreen.svg)]()
 [![Downloads](https://static.pepy.tech/badge/scikeo)](https://pepy.tech/project/scikeo)
+[![Downloads](https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/docs-passing-brightgreen.svg)]()
 [![tests](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml/badge.svg)](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml)
 
 
