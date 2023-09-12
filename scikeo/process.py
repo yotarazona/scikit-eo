@@ -307,7 +307,9 @@ def confintervalML(matrix, image_pred, pixel_size = 10, conf = 1.96, nodata = No
               'Users_accuracy_95%':conf_int_ua,
               'Area_total_estimated': A,
               'Area_at_95%': SA,
-              'conf_int_oa': conf_int_oa}
+              'conf_int_oa': conf_int_oa,
+              'iclass': iclass
+             }
     
     return result
 
@@ -336,6 +338,7 @@ def print_info(params):
     c = params.get('Area_total_estimated')
     d = params.get('Area_at_95%')
     e = params.get('conf_int_oa')
+    f = params.get('iclass')
     
     print('***** Confusion Matrix by Estimated Proportions of area an uncertainty*****')
     print('')
@@ -347,8 +350,8 @@ def print_info(params):
     print('')
     print('User´s accuracy with 95%')
     for i in range(b.shape[0]):
-        print(f'{iclass[i]}: {a[i]:.4f} ± {b[i]:.4f}')
+        print(f'{f[i]}: {a[i]:.4f} ± {b[i]:.4f}')
     print('')
     print('Estimating area (Ha) and uncertainty with 95%')
     for i in range(b.shape[0]):
-        print(f'{iclass[i]}: {c[i]:.4f} ± {d[i]:.4f}')
+        print(f'{f[i]}: {c[i]:.4f} ± {d[i]:.4f}')
