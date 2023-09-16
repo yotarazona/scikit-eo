@@ -185,7 +185,7 @@ axes[1].grid(False)
 </a>
 </p>
 
-This result shows us how we can use the ```scikit-eo``` python package in order to obtaind a Land Cover map. Following this tutorial is it possible to use different algorithms such as Support Vector Machine, Decision Tree, amont others.
+This result shows us how we can use the ```scikit-eo``` python package in order to obtaind a Land Cover map. Following this tutorial is it possible to use different algorithms such as Support Vector Machine, Decision Tree, Neural Networks, amont others.
 
 
 -   Free software: Apache Software License 2.0
