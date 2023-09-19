@@ -13,6 +13,8 @@ This Get Started is intended as a guide to apply several remote sensing tools in
 
 [Example 04: Confusion matrix by estimated proportions of area with a confidence interval at 95%](#example04)
 
+[Example 05: Linear trend analysis to map forest degradation](#example05)
+
 # **Brief examples**
 
 ## <a name = "example01"></a>**Example 01: Random Forest (RF) classifier**
@@ -59,7 +61,7 @@ df = pd.DataFrame(iter(endm))
 df.head()
 ```
 <p align="left">
-  <a href="https://github.com/ytarazona/scikit-eo"><img src="https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/endembers.png" alt ="header" width = 75%>
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/endembers.png" alt ="header" width = 75%>
 </a>
 </p>
 
@@ -97,7 +99,7 @@ Confusion matrix or error matrix
 rf_class.get('Confusion_Matrix')
 ```
 <p align="left">
-  <a href="https://github.com/ytarazona/scikit-eo"><img src="https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/confusion_matrix.png" alt ="header" width = 80%>
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/confusion_matrix.png" alt ="header" width = 80%>
 </a>
 </p>
 
@@ -122,7 +124,7 @@ axes[1].set_title("Classification map")
 axes[1].grid(False)
 ```
 <p align="left">
-  <a href="https://github.com/ytarazona/scikit-eo"><img src="https://raw.githubusercontent.com/ytarazona/scikit-eo/main/docs/images/classification.png" alt ="header" width = "750">
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/classification.png" alt ="header" width = "750">
 </a>
 </p>
 
@@ -173,7 +175,7 @@ With this result it can be observed that SVM and RF obtained a higher overall ac
 
 This is an area where **scikit-eo** provides a novel approach to merge different types of satellite imagery. We are in a case where, after combining different variables into a single output, we want to know the contributions of the different original variables in the data fusion. The fusion of radar and optical images, despite of its well-know use, to improve land cover mapping, currently has no tools that help researchers to integrate or combine those resources. In this third example, users can apply imagery fusion with different observation geometries and different ranges of the electromagnetic spectrum [(Tarazona et al., 2021)](https://www.tandfonline.com/doi/full/10.1080/07038992.2021.1941823). The input data needed are the optical satellite image and the radar satellite image, for instance.
 
-In ```scikit-eo``` we developed the function ```fusionrs()``` which provides us with a dictionary with the following image fusion interpretation features:
+In ```scikit-eo``` we developed the ```fusionrs()``` function which provides us with a dictionary with the following image fusion interpretation features:
 
 - *Fused_images*: The fusion of both images into a 3-dimensional array (rows, cols, bands).
 - *Variance*: The variance obtained.
@@ -270,12 +272,12 @@ plt.show()
 
 ![Fusion of optical and radar images. Principal Component 1 corresponds to red channel, Principal Component 2 corresponds to green channel and Principal Component 3 corresponds to blue channel.](images/scikit_eo_04.png){ width=55% }
 
-
+<!-- #region -->
 ## <a name = "example04"></a>**Example 04: Confusion matrix by estimated proportions of area with a confidence interval at 95%**
 
 In this final example, after obtaining the predicted class map, we are in a case where we want to know the uncertainties of each class. The assessing accuracy and area estimate will be obtained following guidance proposed by [(Olofsson et al., 2014)](https://doi.org/10.1016/j.rse.2014.02.015). All that users need are the confusion matrix and a previously obtained predicted class map.
 
-```confintervalML``` requires the following parameters:
+In ```scikit-eo``` we developed the ```confintervalML``` function to estimate area and uncertainty with 95%. ```confintervalML``` requires the following parameters:
 
 - *matrix*: confusion matrix or error matrix in numpy.ndarray.
 - *image_pred*: a 2-dimensional array (rows, cols). This array should be the classified image with predicted classes.
@@ -302,3 +304,98 @@ Results:
 
 ![Estimating area and uncertainty with 95%.](images/scikit_eo_05.png){ width=80%}
 <!-- #endregion -->
+<!-- #endregion -->
+
+## <a name = "example05"></a>**Example 05: Linear trend analysis to map forest degradation**
+
+In this tutorial, forest degradation will be mapped using the Maximum Value Compositing (MVC) of Normalized Difference Vegetation Index (NDVI). Therefore, NDVI as a proxy of NPP makes it a useful indicator of resilience of ecosystems that allows its monitoring and evaluation through remote sensing, and it is the indicator we will use for the purposes of this example. 
+
+Detecting forest degradation in terms of long-term loss of forest productivity of ecosystems through a Simple Linear Trend (SLT) is a standard method. Initiatives to monitor forest degradation using remote sensing techniques are few and urgent for the effects of conservation and restoration of degraded ecosystems in Peru. 
+
+The study area is located in Madre de Dios, a region located in southeastern Peru. Madre de Dios is a biodiversity hotspot, with 40% of its area protected by a set of Natural Protected Areas and Native Communities, and it has the largest coal reserves in the world. 
+
+The main drivers of forest degradation are economic activities such as gold mining, logging and agriculture. Gold mining represents the first large-scale economic activity in Madre de Dios.
+
+<!-- #region -->
+#### 01. Optical image to be used
+
+NDVI from 2000 to 2015 will be used. These indices were obtained from Landsat-5 and Landsat-8 images. One per year.
+
+The images as stack can be downloaded [here](https://drive.google.com/drive/folders/1mGSSg_sRFS3_SeNrR390w3UEMmMwHwg8?usp=sharing):
+
+#### 02. Libraries to be used in this example
+
+
+```python
+import rasterio
+import numpy as np
+from scikeo.linearTrend import linearTrend
+import matplotlib.pyplot as plt
+import earthpy.plot as ep
+```
+
+Let´s plot the images (NDVI) from 2000 to 2015:
+
+```python
+ep.plot_bands(ts_img.read(), cmap = 'RdYlGn', cols = 4)
+```
+<!-- #endregion -->
+
+<p align="left">
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/scikit_eo_06.png" alt ="header" width = "600">
+</a>
+</p>
+
+<!-- #region -->
+Instance of ```linearTrend```:
+
+```python
+inst = linearTrend(image = ts_img)
+```
+
+Applying the ```LN()``` function:
+
+```python
+trend = inst.LN()
+```
+
+Dictionary of esults:
+
+```python
+# dictionary as result
+trend.keys()
+```
+
+Let´s plot the slope and p-value obtained:
+
+```python
+# Let´s plot
+fig, axes = plt.subplots(nrows = 2, ncols = 2, figsize = (12, 9))
+evi_2001 = axes[0][0].imshow(ts_img.read(1), cmap = 'RdYlGn')
+axes[0][0].set_title("Enhanced Vegetation Index - 2000")
+axes[0][0].grid(False)
+bar1 = fig.colorbar(evi_2001, ax = axes[0][0])
+
+evi_2015 = axes[0][1].imshow(ts_img.read(14), cmap = 'RdYlGn')
+axes[0][1].set_title("Enhanced Vegetation Index  - 2015")
+axes[0][1].grid(False)
+bar2 = fig.colorbar(evi_2015, ax = axes[0][1])
+
+slope = axes[1][0].imshow(trend.get('slope'), cmap = 'Spectral')
+axes[1][0].set_title("Slope: Linear trend analysis")
+axes[1][0].grid(False)
+bar3 = fig.colorbar(slope, ax = axes[1][0])
+
+pvalue = axes[1][1].imshow(trend.get('pvalue'), cmap = 'gist_rainbow')
+axes[1][1].set_title("P-value: Linear trend Analysis")
+axes[1][1].grid(False)
+bar4 = fig.colorbar(pvalue, ax = axes[1][1])
+```
+
+<p align="left">
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/scikit_eo_07.png" alt ="header" width = "600">
+</a>
+</p>
+<!-- #endregion -->
+
+It is necessary to mention that forest degradation is expected to result in a statistically significant negative **slope** in the NDVI trend. The statistical robustness of the estimated trend was tested with a test from **ρ** (*P-value*) obtained from the simple regression function. *We defined the identification of degradation, with greater probability, at 95% of reliability*.
