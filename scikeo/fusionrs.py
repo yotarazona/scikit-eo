@@ -82,7 +82,7 @@ def fusionrs(optical, radar, stand_varb = True, nodata = -99999, **kwargs):
     
     # nodata
     if np.isnan(np.sum(arr)):
-        arr[np.isnan(arr)] = self.nodata
+        arr[np.isnan(arr)] = nodata
     
     # standardized variables
     if stand_varb:
