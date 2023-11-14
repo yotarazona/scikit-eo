@@ -1,8 +1,8 @@
-site_name: scikit-eo
+site_name: geoyons
 
-site_url: https://yotarazona.github.io/scikit-eo
+site_url: https://geoyons.github.io
 
-repo_url: https://yotarazona.github.io/scikit-eo
+repo_url: https://geoyons.github.io
 
 theme:
     palette:
@@ -67,18 +67,3 @@ nav:
     - Contributing: contributing.md
     - FAQ: faq.md
     - Report Issues: https://github.com/yotarazona/scikit-eo/issues
-    - API Reference:
-          - mla module: mla.md
-          - calmla module: calmla.md
-          - rkmeans module: rkmeans.md
-          - calkmeans module: calkmeans.md
-          - pca module: pca.md
-          - atmosCorr module: atmosCorr.md
-          - deeplearning module: deeplearning.md
-          - linearTrend module: linearTrend.md
-          - fusionrs module: fusionrs.md
-          - sma module: sma.md
-          - tassCap module: tassCap.md
-          - plot module: plot.md
-          - writeRaster module: writeRaster.md
-          - process module: process.md
