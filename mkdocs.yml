@@ -1,8 +1,8 @@
 site_name: geoyons
 
-site_url: https://geoyons.github.io
+site_url: https://yotarazona.github.io/scikit-eo/
 
-repo_url: https://geoyons.github.io
+repo_url: https://yotarazona.github.io/scikit-eo/
 
 theme:
     palette:
