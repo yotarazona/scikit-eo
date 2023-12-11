@@ -202,7 +202,7 @@ def confintervalML(matrix, image_pred, pixel_size = 10, conf = 1.96, nodata = No
             
             # xlabel
             if nodata is None:
-                image_pred = image_pred
+                image_pred = image_pred.astype(float)
             else:
                 image_pred[image_pred == nodata] = np.nan
         
