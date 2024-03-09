@@ -2,9 +2,9 @@
 
 **Scikit-eo** is maintained by a core group of Python enthusiasts working in various international universities such as Pontificia Universidad Católica del Perú (Peru), University of Coimbra (Portugal), Adam Mickiewicz University in Poznań (Poland) and The school of geography and sustainable development, University of St Andrews (UK).
 
-- [Yonatan Tarazona](https://github.com/ytarazona)
-- [Jakub Nowosad](https://github.com/Nowosad)
+- [Yonatan Tarazona](https://github.com/yotarazona)
 - [Fernando Benitez-Paez](https://github.com/mfbenitezp)
+- [Jakub Nowosad](https://github.com/Nowosad)
 - [David Montero Loaiza](https://github.com/davemlz)
 
 ## **Contributors and collaborators**
