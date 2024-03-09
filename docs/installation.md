@@ -19,7 +19,7 @@ If you don't have [pip](https://pip.pypa.io) installed, this [Python installatio
 It is also possible to install the latest development version directly from the GitHub repository with:
 
 ```python
-pip install git+https://github.com/ytarazona/scikit-eo
+pip install git+https://github.com/yotarazona/scikit-eo
 ```
 This is the preferred method to install scikit-eo, as it will always install the most recent stable release.
 <!-- #endregion -->
