@@ -201,3 +201,7 @@ Special thanks to:
 ## Credits
 
 This package was created with [Cookiecutter](https://github.com/cookiecutter/cookiecutter)
+
+## Logo inspirationt
+
+The logo on the package is inspired by fog oasis known as "lomas", an ecosystem that [María Miyasiro](https://pe.linkedin.com/in/mariamiyasiro/es) is passionate about.
