@@ -19,19 +19,21 @@ authors:
     orcid: 0000-0002-1057-3721
   - name: Fabian Drenkhan
     orcid: 0000-0002-9443-9596
-    affiliation: 1
+    affiliation: 4
   - name: Martín E. Timaná
     orcid: 0000-0003-1559-4449
-    affiliation: 4
+    affiliation: 5
 affiliations:
-  - name: Geography and the Environment, Department of Humanities, Pontificia Universidad Católica del Perú, Lima, Peru
+  - name: Department of Earth Sciences, Center for Earth and Space Research (CITEUC), University of Coimbra, 3040-004 Coimbra, Portugal
     index: 1
   - name: The school of geography and sustainable development, University of St Andrews
     index: 2
   - name: Adam Mickiewicz University in Poznań
     index: 3
-  - name: Applied Geography Research Center, Department of Humanities, Pontificia Universidad Católica del Perú, Lima, Peru
+  - name: Geography and the Environment, Department of Humanities, Pontificia Universidad Católica del Perú, Lima, Peru
     index: 4
+  - name: Applied Geography Research Center, Department of Humanities, Pontificia Universidad Católica del Perú, Lima, Peru
+    index: 5
     
 date: 09 March 2023
 bibliography: paper.bib
@@ -51,7 +53,7 @@ By integrating this diverse set of tools, **scikit-eo** allows you to focus on a
 
 **scikit-eo** is an open-source package built entirely in Python through Object-Oriented Programming and Structured Programming that provides a helpful variety of remote sensing tools (see \autoref{fig:workflow}), from primary and exploratory functions to more advanced methods to classify, calibrate, or fuse satellite imagery. Depending on users' needs, **scikit-eo** can provide the basic but essential land cover characterization mapping, including the confusion matrix and the required metrics such as user's accuracy, producer's accuracy, omissions and commission errors. These required metrics can be combined as a pandas ```DataFrame``` object. Furthermore, a class prediction map is a result of land cover mapping, i.e., a land cover map, which represents the output of the classification algorithm or the output of the segmentation algorithm. These two outcomes must include uncertainties with a confidence level (e.g., at $95$% or $90$%). All required metrics from the confusion matrix can be easily computed and included confidence levels with **scikit-eo** following guidance proposed by @OLOFSSON201442. Other useful tools for remote sensing analysis can be found in this package; for more information about the full list of the supported functions as well as how to install and execute the package within a Python setting, visit the [scikit-eo](https://yotarazona.github.io/scikit-eo/) website.
 
-![Workflow of various functionalities of the *scikit-eo* python package. Outputs that can be obtained. \label{fig:workflow}](workflow_basic.png){ width=95% }
+![Workflow of various functionalities of the *scikit-eo* python package. Outputs that can be obtained. \label{fig:workflow}](workflow_basic.png){ width=100% }
 
 # Audience
 
