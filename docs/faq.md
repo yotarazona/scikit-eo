@@ -2,7 +2,7 @@
 
 ### How do I report an issue or make a feature request: 
 
-Please go to <https://github.com/ytarazona/scikit-eo/issues>.
+Please go to <https://github.com/yotarazona/scikit-eo/issues>.
 
 #### 1. Why machine learning algorithms not running?
 
