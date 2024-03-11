@@ -23,19 +23,16 @@ Remote sensing tools of **scikit-eo** can be mainly grouped into 3 sets.
 8. [Tasseled-Cap Transformation.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/08_Tasseled_Cap_Transformation.ipynb)
 9. [Linear trend analysis.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/09_Linear_trend_analysis.ipynb)
 10. [Logistic regression in remote sensing.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/10_Logistic_regression_in_remote_sensing.ipynb)
-11. [Deep Learning Classification FullyConnected.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/14_Deep_Learning_Classification_FullyConnected.ipynb)
+11. [Deep Learning Classification FullyConnected.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/11_Deep_Learning_Classification_FullyConnected.ipynb)
 
 ### Tools for satellite image preprocessing
 
-12. [Atmospheric Correction.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/11_Atmospheric_Correction.ipynb)
-13. [Clipping an image.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/15_Clipping_an_image.ipynb)
+12. [Atmospheric Correction.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/12_Atmospheric_Correction.ipynb)
+13. [Clipping an image.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/13_Clipping_an_image.ipynb)
+14. [Writing a satellite image (raster).ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/14_Writing_a_satellite_image%20(raster).ipynb)
 
 ### Tools for satellite image visualizations
 
-14. [Plot an satellite image in RGB.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/12_Plot_an_satellite_image_in_RGB.ipynb)
-15. [Plot a satellite image histogram.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/13_Plot_a_satellite_image_histogram.ipynb)
+15. [Plot an satellite image in RGB.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/15_Plot_a_satellite_image_in_RGB.ipynb)
+16. [Plot a satellite image histogram.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/16_Plot_a_satellite_image_histogram.ipynb)
 <!-- #endregion -->
-
-```python
-
-```
