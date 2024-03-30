@@ -10,7 +10,7 @@ tags:
 authors:
   - name: Yonatan Tarazona
     orcid: 0000-0002-5208-1004
-    affiliation: 1,4
+    affiliation: "1,4"
   - name: Fernando Benitez-Paez
     affiliation: 2
     orcid: 0000-0002-9884-6471
@@ -24,9 +24,9 @@ authors:
     orcid: 0000-0003-1559-4449
     affiliation: 5
 affiliations:
-  - name: Department of Earth Sciences, Center for Earth and Space Research (CITEUC), University of Coimbra, 3040-004 Coimbra, Portugal
+  - name: Department of Earth Sciences, Center for Earth and Space Research (CITEUC), University of Coimbra, Portugal
     index: 1
-  - name: The school of geography and sustainable development, University of St Andrews
+  - name: The School of Geography and Sustainable Development, University of St Andrews
     index: 2
   - name: Adam Mickiewicz University in Poznań
     index: 3
@@ -35,7 +35,7 @@ affiliations:
   - name: Applied Geography Research Center, Department of Humanities, Pontificia Universidad Católica del Perú, Lima, Peru
     index: 5
     
-date: 09 March 2023
+date: 29 March 2024
 bibliography: paper.bib
 ---
 
@@ -49,7 +49,11 @@ To bridge the gaps in remotely sensed data processing tools, we here introduce *
 
 By integrating this diverse set of tools, **scikit-eo** allows to focus on analyzing the results of data rather than being bogged down by complex lines of code. With its centralized structure, integrated use cases, and example data, **scikit-eo** empowers to optimize resources and dedicate more attention to the meaningful interpretation of findings in a more efficient way.
 
-# Highlights
+# Statement of Need
+
+As remote sensing data and sophisticated processing tools become increasingly available, there is a growing need for scalable and customized toolkits to help environmental researchers classify satellite and drone imagery quickly and accurately. Our goal is to simplify the identification of patterns, changes, and trends that are crucial for environmental research and analysis.
+
+In this paper, we introduce **scikit-eo**, a specialized library with tailored analysis capabilities designed to meet the unique demands of environmental studies. From statistical methods to machine learning algorithms, **scikit-eo** assists researchers in uncovering intricate spatial patterns, relationships, and trends, while also simplifying the evaluation and calibration of generated outputs.
 
 **scikit-eo** is an open-source package built entirely in Python through Object-Oriented Programming and Structured Programming that provides a helpful variety of remote sensing tools (see \autoref{fig:workflow}), from primary and exploratory functions to more advanced methods to classify, calibrate, or fuse satellite imagery. Depending on the users' needs, **scikit-eo** can provide the basic but essential land cover characterization mapping, including the confusion matrix and the required metrics such as user's accuracy, producer's accuracy, omission and commission errors. These required metrics can be combined as a pandas ```DataFrame``` object. Furthermore, a class prediction map is a result of land cover mapping, i.e., a land cover map, which represents the output of the classification algorithm or the output of the segmentation algorithm. These two outcomes must include uncertainties with a confidence level (e.g., at $95$% or $90$%). All required metrics from the confusion matrix can be easily computed and included confidence levels with **scikit-eo** following guidance proposed by @OLOFSSON201442. Other useful tools for remote sensing analysis can be found in this package; and for more information about the full list of the supported functions, tutorials as well as how to install and execute the package within a Python setting, visit the [scikit-eo](https://yotarazona.github.io/scikit-eo/) website.
 
@@ -97,7 +101,6 @@ As open-source software keeps transforming the landscape of scientific research 
 : Main tools available for **scikit-eo** package. \label{table:1}
 
 For more information the reader is referred to the [scikit-eo](https://yotarazona.github.io/scikit-eo/) website.
-
 
 # Acknowledgments
 
