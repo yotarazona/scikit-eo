@@ -3,5 +3,9 @@ fiona
 numpy
 pandas
 rasterio
+matplotlib
+geopandas
+seaborn
+statsmodels
 scikit-learn
 scipy
