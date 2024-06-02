@@ -44,7 +44,17 @@ You will find more algorithms!.
 
 # Installation
 
-To use **scikit-eo** it is necessary to install it. There are two options:
+It is a recommended practice to provide some instructions for isolating/containerizing ```scikit-eo```. It would benefit their use and thus avoid that some dependencies are not compatible with others. For example, conda provides an easy solution.
+
+```python
+conda create -n scikiteo python = 3.10
+```
+Then, activate the environment created
+
+```python
+conda activate scikiteo
+```
+Then finally, to use **scikit-eo** it is necessary to install it. There are two options:
 
 ## 1. From PyPI
 
