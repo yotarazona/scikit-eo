@@ -4,8 +4,9 @@ import rasterio
 import numpy as np
 import pandas as pd
 from dbfread import DBF
-from tensorflow.keras import models
-from tensorflow.keras import layers
+from tensorflow import keras
+from keras import models
+from keras import layers
 from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -258,3 +259,6 @@ class DL(object):
     
         return output
     
+# -
+
+
