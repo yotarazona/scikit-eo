@@ -9,3 +9,4 @@ seaborn
 statsmodels
 scikit-learn
 scipy
+pytest
