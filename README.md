@@ -67,7 +67,9 @@ It is also possible to install the latest development version directly from the 
 pip install git+https://github.com/yotarazona/scikit-eo
 ```
 
-> **Note**: It is a recommended practice to provide some instructions for isolating/containerizing ```scikit-eo```. It would benefit their use and thus avoid that some dependencies are not compatible with others. For example, conda provides an easy solution.
+## containerizing ```scikit-eo```
+
+**Note**: It is a recommended practice to provide some instructions for isolating/containerizing ```scikit-eo```. It would benefit their use and thus avoid that some dependencies are not compatible with others. For example, conda provides an easy solution.
 
 ```python
 conda create -n scikiteo python = 3.8
