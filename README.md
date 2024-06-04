@@ -77,7 +77,7 @@ Then, activate the environment created
 ```python
 conda activate scikiteo
 ```
-Then finally, ```scikit-eo```` can be install within this new environment using via PyPI or from the GitHub repository.
+Then finally, ```scikit-eo``` can be install within this new environment using via PyPI or from the GitHub repository.
 
 <!-- #endregion -->
 
