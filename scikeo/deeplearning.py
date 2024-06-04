@@ -7,7 +7,7 @@ from dbfread import DBF
 from tensorflow import keras
 from keras import models
 from keras import layers
-from tensorflow.keras.utils import to_categorical
+from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import cohen_kappa_score
