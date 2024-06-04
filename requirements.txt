@@ -1,12 +1,12 @@
-dbfread
-fiona
 numpy
 pandas
-rasterio
 matplotlib
-geopandas
+rasterio
 seaborn
 statsmodels
 scikit-learn
 scipy
 pytest
+dbfread
+fiona
+geopandas
