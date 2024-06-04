@@ -41,20 +41,15 @@ Therefore, [scikit-eo](https://github.com/yotarazona/scikit-eo) is a Python pack
 
 You will find more algorithms!.
 
+# Dependencies used by **scikit-eo**
+
+All dependencies used by ```scikit-eo``` are as follows:
+
+```numpy```, ```pandas```, ```matplotlib```, ```rasterio```, ```seaborn```, ```statsmodels```, ```scikit-learn```, ```scipy```, ```pytest```, ```dbfread```, ```fiona``` and ```geopandas```. By installing ```scikit-eo``` all these packages will be installed!.
 
 # Installation
 
-It is a recommended practice to provide some instructions for isolating/containerizing ```scikit-eo```. It would benefit their use and thus avoid that some dependencies are not compatible with others. For example, conda provides an easy solution.
-
-```python
-conda create -n scikiteo python = 3.10
-```
-Then, activate the environment created
-
-```python
-conda activate scikiteo
-```
-Then finally, to use **scikit-eo** it is necessary to install it. There are two options:
+To use ```scikit-eo``` it is necessary to install it. There are two options:
 
 ## 1. From PyPI
 
@@ -71,6 +66,19 @@ It is also possible to install the latest development version directly from the 
 ```python
 pip install git+https://github.com/yotarazona/scikit-eo
 ```
+
+> **Note**: It is a recommended practice to provide some instructions for isolating/containerizing ```scikit-eo```. It would benefit their use and thus avoid that some dependencies are not compatible with others. For example, conda provides an easy solution.
+
+```python
+conda create -n scikiteo python = 3.8
+```
+Then, activate the environment created
+
+```python
+conda activate scikiteo
+```
+Then finally, ```scikit-eo```` can be install within this new environment using via PyPI or from the GitHub repository.
+
 <!-- #endregion -->
 
 # Example
