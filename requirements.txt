@@ -1,4 +1,4 @@
-numpy
+tensorflow
 pandas
 matplotlib
 rasterio
@@ -11,3 +11,4 @@ dbfread
 fiona
 geopandas
 tensorflow
+numpy
