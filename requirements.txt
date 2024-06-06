@@ -10,3 +10,4 @@ pytest
 dbfread
 fiona
 geopandas
+tensorflow
