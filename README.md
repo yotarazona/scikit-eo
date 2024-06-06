@@ -93,14 +93,15 @@ Libraries to be used:
 import rasterio
 import numpy as np
 from scikeo.mla import MLA
+from scikeo.process import extract
 import matplotlib.pyplot as plt
-from dbfread import DBF
 import matplotlib as mpl
-import pandas as pd
+import geopandas as gpd
+from scikeo.plot import plotRGB
+from scikeo.writeRaster import writeRaster
 ```
 
 ## 2.0 Optical image
-
 
 Landsat-8 OLI (Operational Land Imager) will be used to obtain in order to classify using Random Forest (RF). This image, which is in surface reflectance with bands:
 - Blue -> B2
@@ -110,25 +111,46 @@ Landsat-8 OLI (Operational Land Imager) will be used to obtain in order to class
 - Swir1 -> B6
 - Swir2 -> B7
 
-The image and signatures to be used can be downloaded [here](https://drive.google.com/drive/folders/193RhNpACu9THcOZu8OzMh-btnFCOgHrU?usp=sharing):
+This image will be downloaded using the following codes:
 
+```python
+import requests, zipfile
+from io import BytesIO
+
+# Defining the zip file URL
+url = 'https://github.com/yotarazona/data/raw/main/data/01_machine_learning.zip'
+
+# Split URL to get the file name
+filename = url.split('/')[-1]
+
+# Downloading the file by sending the request to the URL
+req = requests.get(url)
+
+# extracting the zip file contents
+file = zipfile.ZipFile(BytesIO(req.content))
+file.extractall()
+```
 
 ## 3.0 Supervised Classification using Random Forest
 
 Image and endmembers
 
 ```python
-path_raster = r"C:\data\ml\LC08_232066_20190727_SR.tif"
+data_dir = "01_machine_learning/"
+
+# satellite image
+path_raster = data_dir + "LC08_232066_20190727_SR.tif"
 img = rasterio.open(path_raster)
 
-path_endm = r"C:\data\ml\endmembers.dbf"
-endm = DBF(path_endm)
+# endmembers
+path_endm = data_dir + "endmembers.shp"
+endm = gpd.read_file(path_endm)
 ```
 
 ```python
 # endmembers
-df = pd.DataFrame(iter(endm))
-df.head()
+endm = extract(img, endm)
+endm
 ```
 <p align="left">
   <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/endembers.png" alt ="header" width = 75%>
