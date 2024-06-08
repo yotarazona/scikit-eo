@@ -115,7 +115,7 @@ class DL(object):
                        random_state = None):
         
         ''' 
-        This algorithm consiste of a network with a sequence of Dense layers, which area densely 
+        This algorithm consists of a network with a sequence of Dense layers, which area densely 
         connnected (also called *fully connected*) neural layers. This is the simplest of deep 
         learning.
         
