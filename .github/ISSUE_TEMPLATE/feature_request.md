@@ -1,7 +1,7 @@
 ---
 name: Feature Request
 about: Submit a feature request to help us improve
-labels: Feature Request
+labels: feature-request
 ---
 
 <!-- Please search existing issues to avoid creating duplicates. -->
