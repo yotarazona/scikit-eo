@@ -10,6 +10,7 @@
 [![Downloads](https://static.pepy.tech/badge/scikeo)](https://pepy.tech/project/scikeo)
 [![Downloads](https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/docs-passing-brightgreen.svg)]()
 [![tests](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml/badge.svg)](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml)
+<a href="https://joss.theoj.org/papers/46bccc5be81d7ea886e05807cfe6790c"><img src="https://joss.theoj.org/papers/46bccc5be81d7ea886e05807cfe6790c/status.svg"></a>
 
 <p align="center">
   <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/scikit-eo_logo.jpg" alt="header" width = '180'></a>
@@ -56,11 +57,20 @@ Therefore, **scikit-eo** is a Python package that provides tools for remote sens
 You will find more algorithms!.
 
 <!-- #region -->
-# **Installation**
 
-To use **scikit-eo** it is necessary to install it. There are two options:
+# Dependencies used by **scikit-eo**
+
+All dependencies used by ```scikit-eo``` are as follows:
+
+```numpy```, ```pandas```, ```matplotlib```, ```rasterio```, ```seaborn```, ```statsmodels```, ```scikit-learn```, ```scipy```, ```pytest```, ```dbfread```, ```fiona``` and ```geopandas```. By installing ```scikit-eo``` all these packages will be installed!.
+
+# Installation
+
+To use ```scikit-eo``` it is necessary to install it. There are two options:
 
 ## 1. From PyPI
+
+**scikit-eo** is available on [PyPI](https://pypi.org/project/scikeo/), so to install it, run this command in your terminal:
 
 ```python
 pip install scikeo
@@ -73,6 +83,19 @@ It is also possible to install the latest development version directly from the 
 ```python
 pip install git+https://github.com/yotarazona/scikit-eo
 ```
+
+## containerizing ```scikit-eo```
+
+**Note**: It is a recommended practice to provide some instructions for isolating/containerizing ```scikit-eo```. It would benefit their use and thus avoid that some dependencies are not compatible with others. For example, conda provides an easy solution.
+
+```python
+conda create -n scikiteo python = 3.8
+```
+Then, activate the environment created
+
+```python
+conda activate scikiteo
+```
+Then finally, ```scikit-eo``` can be install within this new environment using via PyPI or from the GitHub repository.
+
 <!-- #endregion -->
-
-
