@@ -5,7 +5,6 @@
 - [Yonatan Tarazona](https://github.com/yotarazona)
 - [Fernando Benitez-Paez](https://github.com/mfbenitezp)
 - [Jakub Nowosad](https://github.com/Nowosad)
-- [David Montero Loaiza](https://github.com/davemlz)
 
 ## **Contributors and collaborators**
 

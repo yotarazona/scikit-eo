@@ -823,16 +823,18 @@
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">rasterio</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">rasterio</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scikeo.mla</span> <span class="kn">import</span> <span class="n">MLA</span>
+<span class="kn">from</span> <span class="nn">scikeo.plot</span> <span class="kn">import</span> <span class="n">plotRGB</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">dbfread</span> <span class="kn">import</span> <span class="n">DBF</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </code></pre></div></td></tr></table></div>
 <h4 id="03-image-and-endmembers">03. Image and endmembers<a class="headerlink" href="#03-image-and-endmembers" title="Permanent link">&para;</a></h4>
-<p>We will upload a satellite image as a <em>.tif</em> and endmembers as a <em>.dbf</em>.</p>
+<p>We will upload a satellite image as a <em>.tif</em> and endmembers as a <em>.dbf</em>. It is possible extract endmembers values using the <code>extract()</code> function. In this case, opload only a shapefile (point feature) of samples without extracted spectral values. Please see <a href="https://yotarazona.github.io/scikit-eo/tutorials/">tutorials</a> section for more details.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -841,10 +843,10 @@
 <span class="normal">6</span>
 <span class="normal">7</span>
 <span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">path_raster</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\data\ml\LC08_232066_20190727_SR.tif&quot;</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">path_raster</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;/home/data/LC08_232066_20190727_SR.tif&quot;</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path_raster</span><span class="p">)</span>
 
-<span class="n">path_endm</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\data\ml\endmembers.dbf&quot;</span>
+<span class="n">path_endm</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;home/data/endmembers.dbf&quot;</span>
 <span class="n">endm</span> <span class="o">=</span> <span class="n">DBF</span><span class="p">(</span><span class="n">path_endm</span><span class="p">)</span>
 
 <span class="c1"># endmembers</span>
@@ -917,7 +919,7 @@ Applying the <code>plotRGB()</code> algorithm is easy:</p>
 To deal with this, users can apply the calibration methods Leave One Out Cross-Validation (LOOCV), Cross-Validation (CV) and Monte Carlo Cross-Validation (MCCV) in order to calibrate a supervised classification with different algorithms. The input data needed are the spectral signatures collected as a <em>.dbf</em> or <em>.csv</em>. The output will provide a graph with the errors of each classifier obtained.</p>
 <h4 id="01-endmembers-as-a-dbf">01. Endmembers as a .dbf<a class="headerlink" href="#01-endmembers-as-a-dbf" title="Permanent link">&para;</a></h4>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">path_endm</span> <span class="o">=</span> <span class="s2">&quot;\data\ex_O2</span><span class="se">\\</span><span class="s2">endmembers\endmembers.dbf&quot;</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">path_endm</span> <span class="o">=</span> <span class="s2">&quot;/home/data/ex_O2/endmembers.dbf&quot;</span>
 <span class="n">endm</span> <span class="o">=</span> <span class="n">DBF</span><span class="p">(</span><span class="n">path_endm</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <h4 id="02-an-instance-of-calmla">02. An instance of calmla()<a class="headerlink" href="#02-an-instance-of-calmla" title="Permanent link">&para;</a></h4>
@@ -960,10 +962,10 @@ To deal with this, users can apply the calibration methods Leave One Out Cross-V
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">path_optical</span> <span class="o">=</span> <span class="s2">&quot;data/ex_03/LC08_003069_20180906.tif&quot;</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">path_optical</span> <span class="o">=</span> <span class="s2">&quot;/home/data/ex_03/LC08_003069_20180906.tif&quot;</span>
 <span class="n">optical</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path_optical</span><span class="p">)</span>
 
-<span class="n">path_radar</span> <span class="o">=</span> <span class="s2">&quot;data/ex_03/S1_2018_VV_VH.tif&quot;</span>
+<span class="n">path_radar</span> <span class="o">=</span> <span class="s2">&quot;/home/data/ex_03/S1_2018_VV_VH.tif&quot;</span>
 <span class="n">radar</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path_radar</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <h4 id="02-applying-the-fusionrs">02. Applying the fusionrs:<a class="headerlink" href="#02-applying-the-fusionrs" title="Permanent link">&para;</a></h4>
@@ -1060,11 +1062,11 @@ To deal with this, users can apply the calibration methods Leave One Out Cross-V
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">#### 01. Load raster data</span>
-<span class="n">path_raster</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\data\ex_O4\ml\predicted_map.tif&quot;</span>
+<span class="n">path_raster</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;/home/data/ex_O4/ml/predicted_map.tif&quot;</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path_optical</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1">#### 02. Load confusion matrix as .csv</span>
-<span class="n">path_cm</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\data\ex_O4\ml\confusion_matrix.csv&quot;</span>
+<span class="n">path_cm</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;/home/data/ex_O4/ml/confusion_matrix.csv&quot;</span>
 <span class="n">values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_radar</span><span class="p">)</span>
 
 <span class="c1">#### 03. Applying the confintervalML:</span>
@@ -1188,7 +1190,7 @@ To deal with this, users can apply the calibration methods Leave One Out Cross-V
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
     </span>
-    2023-09-19
+    2024-06-11
   </span>
 
     

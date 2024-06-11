@@ -41,19 +41,20 @@ The image and signatures to be used can be downloaded [here](https://drive.googl
 import rasterio
 import numpy as np
 from scikeo.mla import MLA
+from scikeo.plot import plotRGB
 import matplotlib.pyplot as plt
 from dbfread import DBF
 import matplotlib as mpl
 import pandas as pd
 ```
 #### 03. Image and endmembers
-We will upload a satellite image as a *.tif* and endmembers as a *.dbf*.
+We will upload a satellite image as a *.tif* and endmembers as a *.dbf*. It is possible extract endmembers values using the ```extract()``` function. In this case, opload only a shapefile (point feature) of samples without extracted spectral values. Please see [tutorials](https://yotarazona.github.io/scikit-eo/tutorials/) section for more details.
 
 ```python
-path_raster = r"C:\data\ml\LC08_232066_20190727_SR.tif"
+path_raster = r"/home/data/LC08_232066_20190727_SR.tif"
 img = rasterio.open(path_raster)
 
-path_endm = r"C:\data\ml\endmembers.dbf"
+path_endm = r"home/data/endmembers.dbf"
 endm = DBF(path_endm)
 
 # endmembers
@@ -136,7 +137,7 @@ To deal with this, users can apply the calibration methods Leave One Out Cross-V
 #### 01. Endmembers as a .dbf
 
 ```python
-path_endm = "\data\ex_O2\\endmembers\endmembers.dbf"
+path_endm = "/home/data/ex_O2/endmembers.dbf"
 endm = DBF(path_endm)
 ```
 #### 02. An instance of calmla()
@@ -190,10 +191,10 @@ In ```scikit-eo``` we developed the ```fusionrs()``` function which provides us 
 Loading a radar and optical imagery with a total of 9 bands. Optical imagery has 6 bands Blue, Green, Red, NIR, SWIR1 and SWIR2, while radar imagery has 3 bandas VV, VH and VV/VH.
 
 ```python
-path_optical = "data/ex_03/LC08_003069_20180906.tif"
+path_optical = "/home/data/ex_03/LC08_003069_20180906.tif"
 optical = rasterio.open(path_optical)
 
-path_radar = "data/ex_03/S1_2018_VV_VH.tif"
+path_radar = "/home/data/ex_03/S1_2018_VV_VH.tif"
 radar = rasterio.open(path_radar)
 ```
 
@@ -288,11 +289,11 @@ In ```scikit-eo``` we developed the ```confintervalML``` function to estimate ar
 <!-- #region -->
 ```python
 #### 01. Load raster data
-path_raster = r"\data\ex_O4\ml\predicted_map.tif"
+path_raster = r"/home/data/ex_O4/ml/predicted_map.tif"
 img = rasterio.open(path_optical).read(1)
 
 #### 02. Load confusion matrix as .csv
-path_cm = r"\data\ex_O4\ml\confusion_matrix.csv"
+path_cm = r"/home/data/ex_O4/ml/confusion_matrix.csv"
 values = pd.read_csv(path_radar)
 
 #### 03. Applying the confintervalML:
