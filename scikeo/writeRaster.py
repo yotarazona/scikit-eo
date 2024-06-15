@@ -66,9 +66,9 @@ def writeRaster(arr, image, filename = None, filepath = None, n = 1):
     })
     
     if arr.ndim == 2:
-        with rasterio.open(path_name, 'w', **kwargs) as img:    
+        with rasterio.open(path_name, 'w', compress='lzw', **kwargs) as img:    
             img.write_band(1, arr)
     else:
-        with rasterio.open(path_name, 'w', **kwargs) as img:
+        with rasterio.open(path_name, 'w', compress='lzw', **kwargs) as img:
             for num, name in enumerate([arr[:,:,i] for i in range(n)], start=1):
                 img.write_band(num, name)
