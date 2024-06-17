@@ -1,6 +1,6 @@
 ## **Maintainers and contributors**
 
-**Scikit-eo** is maintained by a core group of Python enthusiasts working in various international universities such as University of Coimbra and Earth Observation Laboratory (Portugal), The school of geography and sustainable development, University of St Andrews (UK), Adam Mickiewicz University in Poznań (Poland) and Pontificia Universidad Católica del Perú (Peru).
+**Scikit-eo** is maintained by a core group of Python enthusiasts working in various international universities such as Pontificia Universidad Católica del Perú (Peru), University of Coimbra (Portugal), Adam Mickiewicz University in Poznań (Poland) and The school of geography and sustainable development, University of St Andrews (UK).
 
 - [Yonatan Tarazona](https://github.com/yotarazona)
 - [Fernando Benitez-Paez](https://github.com/mfbenitezp)
