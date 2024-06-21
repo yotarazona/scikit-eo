@@ -9,17 +9,17 @@ import numpy as np
 import pandas as pd
 import geopandas as gpd
 
-def crop(image, shp, filename = None, filepath = None):
+def crop(image, vector, filename = None, filepath = None):
     
     '''
-    This algorithm allows to clip a raster (.tif) including a satellite image using a shapefile.
+    This algorithm allows to clip a raster (.tif) including a satellite image using a vector file, tipically a shapefile.
     
     Parameters:
         
         image: This parameter can be a string with the raster path (e.g., r'/home/image/b3.tif') or
         it can be a rasterio.io.DatasetReader type.
         
-        shp: Vector file, tipically shapefile.
+        vector: Vector file, tipically shapefile, for instance.
         
         filename: The image name to be saved.
         
@@ -34,7 +34,7 @@ def crop(image, shp, filename = None, filepath = None):
         
         image = image.replace(os.sep, '/')
     
-        shp = shp.replace(os.sep, '/')
+        vector = vector.replace(os.sep, '/')
         
         if filename is None:
         
@@ -51,8 +51,8 @@ def crop(image, shp, filename = None, filepath = None):
     
         path_name = path
     
-        # read Shapefile
-        with fiona.open(shp, "r") as shapefile:
+        # read a vector
+        with fiona.open(vector, "r") as shapefile:
             shapes = [feature["geometry"] for feature in shapefile]
 
         # read image
@@ -71,7 +71,7 @@ def crop(image, shp, filename = None, filepath = None):
     
     elif isinstance(image, (rasterio.io.DatasetReader)):
     
-        shp = shp.replace(os.sep, '/')
+        vector = vector.replace(os.sep, '/')
         
         if filename is None:
         
@@ -89,7 +89,7 @@ def crop(image, shp, filename = None, filepath = None):
         path_name = path
     
         # read Shape file
-        with fiona.open(shp, "r") as shapefile:
+        with fiona.open(vector, "r") as shapefile:
             shapes = [feature["geometry"] for feature in shapefile]
 
         # read image
@@ -108,17 +108,17 @@ def crop(image, shp, filename = None, filepath = None):
     else:
         raise TypeError(f'"image" must be a string like r"/home/image/b5.tif" or must be rasterio.io.DatasetReader. image = {type(image)}')
 
-        
-def extract(image, shp):
+
+def extract(image, vector):
     
     '''
-    This algorithm allows to extract raster values using a shapefile.
+    This algorithm allows to extract raster values using a vector file (with a Point geometry).
     
     Parameters:
         
         image: Optical images. It must be rasterio.io.DatasetReader with 3d or 2d.
         
-        shp: Vector file, tipically shapefile.
+        vector: Vector file, tipically shapefile, for instance.
         
     Return:
     
@@ -132,10 +132,16 @@ def extract(image, shp):
     if not isinstance(image, (rasterio.io.DatasetReader)):
         raise TypeError('"image" must be raster read by rasterio.open().')
     
-    if not isinstance(shp, (gpd.geodataframe.GeoDataFrame)):
-        raise TypeError('"shp" must be Shapefile (.shp)')
-    
-    gdf = gpd.GeoDataFrame(geometry = shp['geometry'])
+    if not isinstance(vector, (gpd.geodataframe.GeoDataFrame)):
+        raise TypeError('"vector" must be a vector, tipically a Shapefile (.shp)')
+
+    if not img.crs == endm.crs:
+        raise TypeError(f'Coordinate systems of both the "image" ({img.crs}) and the "vector" ({endm.crs}) must be the same.')
+
+    if not vector.geom_type[0] == 'Point':
+        raise TypeError('"Vector" file must have a Point geometry.')
+        
+    gdf = gpd.GeoDataFrame(geometry = vector['geometry'])
     
     coords = [(x,y) for x, y in zip(gdf['geometry'].x, gdf['geometry'].y)]
     
@@ -147,7 +153,7 @@ def extract(image, shp):
     
     df = pd.DataFrame(gdf["values"].to_list(), columns = col_names)
     
-    join_df = pd.concat([shp.iloc[:,0], df], axis = 1, join = 'inner')
+    join_df = pd.concat([vector.iloc[:,0], df], axis = 1, join = 'inner')
 
     if join_df.isnull().values.any():
         raise TypeError('DataFrame contains nan values. Check it out')
