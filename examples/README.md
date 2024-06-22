@@ -53,4 +53,4 @@ file = zipfile.ZipFile(BytesIO(req.content))
 file.extractall()
 ```
 
-The third option is part of each notebook tutorial, so that reading and executing the tutorials are automated as much as possible.
+**!The third option is part of each notebook tutorial, so that reading and executing the tutorials are automated as much as possible**¡.
