@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\deeplearning.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # <kbd>module</kbd> `deeplearning`
 
@@ -11,12 +11,12 @@
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L15"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\deeplearning.py#L16"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>class</kbd> `DL`
 Deep Learning classification in Remote Sensing 
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L19"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\deeplearning.py#L20"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `__init__`
 
@@ -39,7 +39,7 @@ Parameter:
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L112"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\deeplearning.py#L113"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `FullyConnected`
 
@@ -56,7 +56,7 @@ FullyConnected(
 )
 ```
 
-This algorithm consiste of a network with a sequence of Dense layers, which area densely  connnected (also called *fully connected*) neural layers. This is the simplest of deep  learning. 
+This algorithm consists of a network with a sequence of Dense layers, which area densely  connnected (also called *fully connected*) neural layers. This is the simplest of deep  learning. 
 
 
 
