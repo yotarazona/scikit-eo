@@ -910,16 +910,16 @@
 <hr />
 <p><a href="..\scikeo\process.py#L12"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
 <h2 id="function-crop"><kbd>function</kbd> <code>crop</code><a class="headerlink" href="#function-crop" title="Permanent link">&para;</a></h2>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">crop</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">shp</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">crop</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-<p>This algorithm allows to clip a raster (.tif) including a satellite image using a shapefile. </p>
+<p>This algorithm allows to clip a raster (.tif) including a satellite image using a vector file, tipically a shapefile. </p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li>
 <p><b><code>image</code></b>:  This parameter can be a string with the raster path (e.g., r'/home/image/b3.tif') or it can be a rasterio.io.DatasetReader type. </p>
 </li>
 <li>
-<p><b><code>shp</code></b>:  Vector file, tipically shapefile. </p>
+<p><b><code>vector</code></b>:  Vector file, tipically shapefile, for instance. </p>
 </li>
 <li>
 <p><b><code>filename</code></b>:  The image name to be saved. </p>
@@ -933,16 +933,16 @@
 <hr />
 <p><a href="..\scikeo\process.py#L112"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
 <h2 id="function-extract"><kbd>function</kbd> <code>extract</code><a class="headerlink" href="#function-extract" title="Permanent link">&para;</a></h2>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">extract</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">shp</span><span class="p">)</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">extract</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-<p>This algorithm allows to extract raster values using a shapefile. </p>
+<p>This algorithm allows to extract raster values using a vector file (with a Point geometry). </p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li>
 <p><b><code>image</code></b>:  Optical images. It must be rasterio.io.DatasetReader with 3d or 2d. </p>
 </li>
 <li>
-<p><b><code>shp</code></b>:  Vector file, tipically shapefile. </p>
+<p><b><code>vector</code></b>:  Vector file, tipically shapefile, for instance. </p>
 </li>
 </ul>
 <p>Return: </p>
@@ -952,7 +952,7 @@
 <p>This function is usually used to extract raster values to be used on machine learning algorithms. </p>
 </blockquote>
 <hr />
-<p><a href="..\scikeo\process.py#L158"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
+<p><a href="..\scikeo\process.py#L164"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
 <h2 id="function-confintervalml"><kbd>function</kbd> <code>confintervalML</code><a class="headerlink" href="#function-confintervalml" title="Permanent link">&para;</a></h2>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">confintervalML</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">image_pred</span><span class="p">,</span> <span class="n">pixel_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">conf</span><span class="o">=</span><span class="mf">1.96</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -983,7 +983,7 @@
 <p>Columns and rows in a confusion matrix indicate reference and prediction respectively. </p>
 </blockquote>
 <hr />
-<p><a href="..\scikeo\process.py#L318"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
+<p><a href="..\scikeo\process.py#L324"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
 <h2 id="function-print_info"><kbd>function</kbd> <code>print_info</code><a class="headerlink" href="#function-print_info" title="Permanent link">&para;</a></h2>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">print_info</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -1021,7 +1021,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
     </span>
-    2024-03-11
+    2024-06-22
   </span>
 
     
