@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/process.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\process.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # <kbd>module</kbd> `process`
 
@@ -10,15 +10,15 @@
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/process.py#L12"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\process.py#L12"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `crop`
 
 ```python
-crop(image, shp, filename=None, filepath=None)
+crop(image, vector, filename=None, filepath=None)
 ```
 
-This algorithm allows to clip a raster (.tif) including a satellite image using a shapefile. 
+This algorithm allows to clip a raster (.tif) including a satellite image using a vector file, tipically a shapefile. 
 
 
 
@@ -29,7 +29,7 @@ This algorithm allows to clip a raster (.tif) including a satellite image using 
  - <b>`image`</b>:  This parameter can be a string with the raster path (e.g., r'/home/image/b3.tif') or it can be a rasterio.io.DatasetReader type. 
 
 
- - <b>`shp`</b>:  Vector file, tipically shapefile. 
+ - <b>`vector`</b>:  Vector file, tipically shapefile, for instance. 
 
 
  - <b>`filename`</b>:  The image name to be saved. 
@@ -44,15 +44,15 @@ A raster in your filepath.
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/process.py#L112"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\process.py#L112"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `extract`
 
 ```python
-extract(image, shp)
+extract(image, vector)
 ```
 
-This algorithm allows to extract raster values using a shapefile. 
+This algorithm allows to extract raster values using a vector file (with a Point geometry). 
 
 
 
@@ -63,7 +63,7 @@ This algorithm allows to extract raster values using a shapefile.
  - <b>`image`</b>:  Optical images. It must be rasterio.io.DatasetReader with 3d or 2d. 
 
 
- - <b>`shp`</b>:  Vector file, tipically shapefile. 
+ - <b>`vector`</b>:  Vector file, tipically shapefile, for instance. 
 
 Return: 
 
@@ -78,7 +78,7 @@ A dataframe with raster values obtained.
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/process.py#L158"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\process.py#L164"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `confintervalML`
 
@@ -124,7 +124,7 @@ Olofsson, P., Foody, G.M., Herold, M., Stehman, S.V., Woodcock, C.E., and Wulder
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/process.py#L318"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\process.py#L324"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `print_info`
 
