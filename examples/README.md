@@ -33,8 +33,7 @@ path_raster = data_dir + "/" + "name_of_file.tif"
 img = rasterio.open(path_raster))
 ```
 
-- 3) *Read directly*: Reading dataset directly from the external server (GitHub in this case). To do this, ```requests```, ```zipfile``` and ```io``` will be installed before. Then you will only need to run the following line:h_raster))
-```
+- 3) *Read directly*: Reading dataset directly from the external server (GitHub in this case). To do this, ```requests```, ```zipfile``` and ```io``` will be installed before. Then you will only need to run the following line:h_raster)).
 
 ```python
 import requests, zipfile
@@ -53,3 +52,5 @@ req = requests.get(url)
 file = zipfile.ZipFile(BytesIO(req.content))
 file.extractall()
 ```
+
+The third option is part of each notebook tutorial, so that reading and executing the tutorials are automated as much as possible.
