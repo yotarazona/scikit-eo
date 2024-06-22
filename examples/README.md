@@ -54,3 +54,6 @@ file.extractall()
 ```
 
 **!The third option is part of each notebook tutorial, so that reading and executing the tutorials are automated as much as possible**¡.
+
+Each Notebook has a dataset to be used and it is available in this link:
+- [https://github.com/yotarazona/data](https://github.com/yotarazona/data)
