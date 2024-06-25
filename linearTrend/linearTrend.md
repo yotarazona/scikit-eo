@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="..\scikeo\linearTrend.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/linearTrend.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # <kbd>module</kbd> `linearTrend`
 
@@ -11,12 +11,12 @@
 
 ---
 
-<a href="..\scikeo\linearTrend.py#L8"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/linearTrend.py#L8"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>class</kbd> `linearTrend`
 Linear Trend in Remote Sensing 
 
-<a href="..\scikeo\linearTrend.py#L12"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/linearTrend.py#L12"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `__init__`
 
@@ -42,7 +42,7 @@ __init__(image, nodata=-99999)
 
 ---
 
-<a href="..\scikeo\linearTrend.py#L26"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/linearTrend.py#L26"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `LN`
 
@@ -80,7 +80,7 @@ Chambers, J.M., 1992. Statistical Models in S. CRS Press.
 
 ---
 
-<a href="..\scikeo\linearTrend.py#L104"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/linearTrend.py#L104"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `LR`
 

@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="..\scikeo\process.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/process.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # <kbd>module</kbd> `process`
 
@@ -10,7 +10,7 @@
 
 ---
 
-<a href="..\scikeo\process.py#L12"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/process.py#L12"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `crop`
 
@@ -44,7 +44,7 @@ A raster in your filepath.
 
 ---
 
-<a href="..\scikeo\process.py#L112"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/process.py#L112"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `extract`
 
@@ -78,7 +78,7 @@ A dataframe with raster values obtained.
 
 ---
 
-<a href="..\scikeo\process.py#L164"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/process.py#L164"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `confintervalML`
 
@@ -86,7 +86,7 @@ A dataframe with raster values obtained.
 confintervalML(matrix, image_pred, pixel_size=10, conf=1.96, nodata=None)
 ```
 
-The error matrix is a simple cross-tabulation of the class labels allocated by the classification of the remotely  sensed data against the reference data for the sample sites. The error matrix organizes the acquired sample data  in a way that summarizes key results and aids the quantification of accuracy and area. The main diagonal of the error  matrix highlights correct classifications while the off-diagonal elements show omission and commission errors.  The cell entries and marginal values of the error matrix are fundamental to both accuracy assessment and area  estimation. The cell entries of the population error matrix and the parameters derived from it must be estimated  from a sample. This function shows how to obtain a confusion matrix by estimated proportions of area with a confidence interval at 95% (1.96). 
+The error matrix is a simple cross-tabulation of the class labels allocated by the classification of the remotely  sensed data against the reference data for the sample sites. The error matrix organizes the acquired sample data  in a way that summarizes key results and aids the quantification of accuracy and area. The main diagonal of the error  matrix highlights correct classifications while the off-diagonal elements show omission and commission errors.  The cell entries and marginal values of the error matrix are fundamental to both accuracy assessment and area  estimation. The cell entries of the population error matrix and the parameters derived from it must be estimated  from a sample. This function shows how to obtain a confusion matrix by estimated proportions of area with a confidence interval at 95% (1.96). I strongly recommend reading Olofsson et al. (2014)'s paper for more technical and scientific details  on the implementation of this function. 
 
 
 
@@ -119,12 +119,12 @@ Olofsson, P., Foody, G.M., Herold, M., Stehman, S.V., Woodcock, C.E., and Wulder
 
 **Note:**
 
-> Columns and rows in a confusion matrix indicate reference and prediction respectively. 
+> Columns and rows in a confusion matrix indicate reference and prediction respectively. Additionally, the most critical recommendation is that the sampling design should be a *probability sampling design*. An essential element of probability sampling is that randomization is incorporated into the sample selection protocol. Various probability sampling designs can be applied for precision assessment and area estimation, the most commonly used designs being simple random, stratified random, and systematic (Olofsson et al., 2014). 
 
 
 ---
 
-<a href="..\scikeo\process.py#L324"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/process.py#L329"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `print_info`
 
