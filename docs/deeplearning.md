@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="..\scikeo\deeplearning.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # <kbd>module</kbd> `deeplearning`
 
@@ -11,12 +11,12 @@
 
 ---
 
-<a href="..\scikeo\deeplearning.py#L16"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L16"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>class</kbd> `DL`
 Deep Learning classification in Remote Sensing 
 
-<a href="..\scikeo\deeplearning.py#L20"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L20"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `__init__`
 
@@ -39,7 +39,7 @@ Parameter:
 
 ---
 
-<a href="..\scikeo\deeplearning.py#L113"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L113"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `FullyConnected`
 
