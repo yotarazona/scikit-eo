@@ -171,7 +171,8 @@ def confintervalML(matrix, image_pred, pixel_size = 10, conf = 1.96, nodata = No
     The cell entries and marginal values of the error matrix are fundamental to both accuracy assessment and area 
     estimation. The cell entries of the population error matrix and the parameters derived from it must be estimated 
     from a sample. This function shows how to obtain a confusion matrix by estimated proportions of area with a confidence
-    interval at 95% (1.96).
+    interval at 95% (1.96). I strongly recommend reading Olofsson et al. (2014)'s paper for more technical and scientific details 
+    on the implementation of this function.
      
     Parameters:
     
@@ -196,7 +197,11 @@ def confintervalML(matrix, image_pred, pixel_size = 10, conf = 1.96, nodata = No
         doi:https://doi.org/10.1016/j.rse.2014.02.015.
     
     Note:
-        Columns and rows in a confusion matrix indicate reference and prediction respectively.
+        Columns and rows in a confusion matrix indicate reference and prediction respectively. Additionally, the most critical
+        recommendation is that the sampling design should be a *probability sampling design*. An essential element of probability sampling
+        is that randomization is incorporated into the sample selection protocol. Various probability sampling designs can be applied for
+        precision assessment and area estimation, the most commonly used designs being simple random, stratified random, and systematic 
+        (Olofsson et al., 2014). 
     '''
     
     if not isinstance(matrix, (np.ndarray)):
