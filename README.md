@@ -37,7 +37,7 @@ Therefore, [scikit-eo](https://github.com/yotarazona/scikit-eo) is a Python pack
 | **`linearTrend`**  | Linear trend is useful for mapping forest degradation or land degradation |
 | **`fusionrs`**     | This algorithm allows to fuse images coming from different spectral sensors (e.g., optical-optical, optical and SAR or SAR-SAR). Among many of the qualities of this function, it is possible to obtain the contribution (%) of each variable in the fused image |
 | **`sma`**          | Spectral Mixture Analysis - Classification sup-pixel                      |
-| **`tassCap`**      | The Tasseled-Cap Transformation                                           |
+| **`tassCap`**      | The Tasseled-Cap Transformation.                                         |
 
 You will find more algorithms!.
 
