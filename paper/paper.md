@@ -26,7 +26,7 @@ authors:
 affiliations:
   - name: Department of Earth Sciences, Center for Earth and Space Research (CITEUC), University of Coimbra, Portugal
     index: 1
-  - name: The School of Geography and Sustainable Development, University of St Andrews
+  - name: The School of Geography and Sustainable Development, University of St Andrews, The UK
     index: 2
   - name: Adam Mickiewicz University in Poznań
     index: 3
@@ -45,7 +45,7 @@ In recent years, a growing body of space-borne and drone imagery has become avai
 
 With an increasing amount of open access data, there is a growing need to account for effective open source tools to read, process and execute analysis that contributes to underpin patterns, changes and trends that are critical for environmental studies. Applications that integrate spatial-temporal data are used to study a variety of complex environmental processes, such as monitoring and assessment of land cover changes [@Chaves2020], crop classifications [@POTT2021196], deforestation [@TARAZONA2018367], impact on urbanization level [@Trinder2020], climate change impacts [@Yang2013]  including assessments of glacier retreat [@Hugonnet2021] and related hydrological change [@Huss2018], biodiversity conservation [@Jeannine2022], and disaster management [@Kucharczyk2021].
 
-To bridge the gaps in remotely sensed data processing tools, we here introduce **scikit-eo**, a brand-new Python package for satellite remote sensing analysis. Unlike other tools, it is a centralized, scalable and open-source toolkit. **scikit-eo** stands out with its unique ability to be used in various settings, from a lecturer room to a crucial part of any Python environment in a research project. The majority of the tools included in **scikit-eo** are derived from peer-reviewed scientific publications, ensuring their reliability and accuracy.
+To bridge the gaps in remotely sensed data processing tools, we here introduce **scikit-eo**, a brand-new Python package for satellite remote sensing analysis. Unlike other tools, it is a centralized, scalable, and open-source toolkit due to its flexibility in being adapted into large dataset processing pipelines. It provides central access to the most commonly used Python functions in remote sensing analysis for environmental studies, including machine learning methods. **scikit-eo** stands out with its ability to be used in various settings, from a lecturer room to a crucial part of any Python environment in a research project. The majority of the tools included in **scikit-eo** are derived from peer-reviewed scientific publications, ensuring their reliability and accuracy.
 
 By integrating this diverse set of tools, **scikit-eo** allows to focus on analyzing the results of data rather than being bogged down by complex lines of code. With its centralized structure, integrated use cases, and example data, **scikit-eo** empowers to optimize resources and dedicate more attention to the meaningful interpretation of findings in a more efficient way.
 
