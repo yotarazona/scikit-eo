@@ -32,7 +32,7 @@ affiliations:
     index: 3
   - name: Geography and the Environment, Department of Humanities, Pontificia Universidad Católica del Perú, Lima, Peru
     index: 4
-  - name: Applied Geography Research Center, Department of Humanities, Pontificia Universidad Católica del Perú, Lima, Peru
+  - name: Applied Geography Research Center, Pontificia Universidad Católica del Perú, Lima, Peru
     index: 5
     
 date: 29 March 2024
