@@ -135,8 +135,8 @@ def extract(image, vector):
     if not isinstance(vector, (gpd.geodataframe.GeoDataFrame)):
         raise TypeError('"vector" must be a vector, tipically a Shapefile (.shp)')
 
-    if not img.crs == endm.crs:
-        raise TypeError(f'Coordinate systems of both the "image" ({img.crs}) and the "vector" ({endm.crs}) must be the same.')
+    if not image.crs == vector.crs:
+        raise TypeError(f'Coordinate systems of both the "image" ({image.crs}) and the "vector" ({vector.crs}) must be the same.')
 
     if not vector.geom_type[0] == 'Point':
         raise TypeError('"Vector" file must have a Point geometry.')
