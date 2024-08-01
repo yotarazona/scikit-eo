@@ -65,7 +65,7 @@ class DL(object):
         key_nan = np.isnan(np.sum(arr[:,0]))
         
         if key_nan:
-            # saving un array for predicted classes
+            # saving an array for predicted classes
             class_final = arr[:, 0].copy()
             # positions with nan
             posIndx = np.argwhere(~np.isnan(class_final)).flatten()
@@ -115,13 +115,13 @@ class DL(object):
                        random_state = None):
         
         ''' 
-        This algorithm consists of a network with a sequence of Dense layers, which area densely 
-        connnected (also called *fully connected*) neural layers. This is the simplest of deep 
+        This algorithm consists of a network with a sequence of Dense layers, which are densely 
+        connected (also called *fully connected*) neural layers. This is the simplest of deep 
         learning.
         
         Parameters:
     
-            hidden_layers: Number of hidden layers to be used. 3 is for default.
+            hidden_layers: Number of hidden layers to be used. 3 is the default.
     
             hidden_units: Number of units to be used. This is related to 'neurons' in each hidden 
                           layers.
@@ -132,7 +132,7 @@ class DL(object):
                          Keras model while training. The model cannot know the shape of the 
                          training data. The shape of other tensors(layers) is computed automatically.
             
-            epochs: Number of iteration, the network will compute the gradients of the weights with
+            epochs: Number of iterations, the network will compute the gradients of the weights with
                     regard to the loss on the batch, and update the weights accordingly.
             
             batch_size: This break the data into small batches. In deep learning, models do not 
