@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\deeplearning.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # <kbd>module</kbd> `deeplearning`
 
@@ -11,12 +11,12 @@
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L16"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\deeplearning.py#L16"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>class</kbd> `DL`
 Deep Learning classification in Remote Sensing 
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L20"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\deeplearning.py#L20"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `__init__`
 
@@ -39,7 +39,7 @@ Parameter:
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/deeplearning.py#L113"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\deeplearning.py#L113"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `FullyConnected`
 
@@ -56,7 +56,7 @@ FullyConnected(
 )
 ```
 
-This algorithm consists of a network with a sequence of Dense layers, which area densely  connnected (also called *fully connected*) neural layers. This is the simplest of deep  learning. 
+This algorithm consists of a network with a sequence of Dense layers, which are densely  connected (also called *fully connected*) neural layers. This is the simplest of deep  learning. 
 
 
 
@@ -64,7 +64,7 @@ This algorithm consists of a network with a sequence of Dense layers, which area
  
 
 
- - <b>`hidden_layers`</b>:  Number of hidden layers to be used. 3 is for default. 
+ - <b>`hidden_layers`</b>:  Number of hidden layers to be used. 3 is the default. 
 
 
  - <b>`hidden_units`</b>:  Number of units to be used. This is related to 'neurons' in each hidden   layers.  
@@ -76,7 +76,7 @@ This algorithm consists of a network with a sequence of Dense layers, which area
  - <b>`input_shape`</b>:  The input shape is generally the shape of the input data provided to the   Keras model while training. The model cannot know the shape of the   training data. The shape of other tensors(layers) is computed automatically. 
 
 
- - <b>`epochs`</b>:  Number of iteration, the network will compute the gradients of the weights with  regard to the loss on the batch, and update the weights accordingly. 
+ - <b>`epochs`</b>:  Number of iterations, the network will compute the gradients of the weights with  regard to the loss on the batch, and update the weights accordingly. 
 
 
  - <b>`batch_size`</b>:  This break the data into small batches. In deep learning, models do not   process antire dataset at once. 
