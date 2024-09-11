@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/calmla.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\calmla.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # <kbd>module</kbd> `calmla`
 
@@ -11,14 +11,14 @@
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/calmla.py#L18"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\calmla.py#L18"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>class</kbd> `calmla`
 **Calibrating supervised classification in Remote Sensing** 
 
 This module allows to calibrate supervised classification in satellite images through various algorithms and using approaches such as Set-Approach,  Leave-One-Out Cross-Validation (LOOCV), Cross-Validation (k-fold) and  Monte Carlo Cross-Validation (MCCV) 
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/calmla.py#L27"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\calmla.py#L27"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `__init__`
 
@@ -39,7 +39,7 @@ References:
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/calmla.py#L321"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\calmla.py#L321"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `CV`
 
@@ -81,7 +81,7 @@ Return:   A graphic with errors for each machine learning algorithms.
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/calmla.py#L223"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\calmla.py#L223"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `LOOCV`
 
@@ -116,7 +116,7 @@ Return:   A graphic with errors for each machine learning algorithms.
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/calmla.py#L422"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\calmla.py#L422"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `MCCV`
 
@@ -159,7 +159,7 @@ Return:   A graphic with errors for each machine learning algorithms.
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/calmla.py#L99"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\calmla.py#L99"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `SA`
 
@@ -194,7 +194,7 @@ Return:   A graphic with errors for each machine learning algorithms.
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/calmla.py#L74"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\calmla.py#L74"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `splitData`
 
