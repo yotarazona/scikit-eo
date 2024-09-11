@@ -87,17 +87,17 @@ def plotHist(image, bands = 1, bins = 128, alpha = 0.8, title = None, xlabel = N
     return ax
 
 
-def plotRGB(image, bands = [3,2,1], stretch = 'std', title = None, xlabel = None, ylabel = None, 
+def plotRGB(image, bands = [5,4,3], stretch = 'std', title = None, xlabel = None, ylabel = None, 
             ax = None, **kwargs):
     
     '''
-    Plotting an image in RGB.
+    Plotting a satellite image in RGB.
     
     This function allows to plot an satellite image in RGB channels.
         
     Parameters:
             
-        image: Optical images. It must be rasterio.io.DatasetReader with 3d.
+        image: Satellite image. It must be np.ndarray with bands, rows and cols or must be rasterio.io.DatasetReader with 3d.
             
         bands: A list contain the order of bands to be used in order to plot in RGB. For example,
                    for six bands (blue, green, red, nir, swir1 and swir2), number four (4) indicates 
@@ -123,21 +123,26 @@ def plotRGB(image, bands = [3,2,1], stretch = 'std', title = None, xlabel = None
         ax: Graphic of an image in RGB.
         
     '''
+
+    if isinstance(image, (np.ndarray)):
+        # data in [rows, cols, bands]
+        ts = np.moveaxis(image, 0, -1)
+
+    elif isinstance(image, (rasterio.io.DatasetReader)):
+        ts = image.read()
+        # data in [rows, cols, bands]
+        ts = np.moveaxis(ts, 0, -1)
     
-    if not isinstance(image, (rasterio.io.DatasetReader)):
-        raise TypeError('"image" must be raster read by rasterio.open().')
+    else:
+        raise TypeError(f'{image} must be an array with 3d (bands, rows, cols) or must be raster read by rasterio.open().')
         
-    st = image.read()
-    
-    if st.shape[0] < 3:
-        raise TypeError('"image" must be a raster with at least three bands.')
-    
-    # data in [rows, cols, bands]
-    st = np.moveaxis(st, 0, -1) 
+        
+    if ts.shape[2] < 3:
+        raise TypeError('"image" must be an image with at least three bands.')
     
     bands = bands
     
-    arr_rgb = np.dstack([st[:, :, (bands[0]-1)], st[:, :, (bands[1]-1)], st[:, :, (bands[2]-1)]])
+    arr_rgb = np.dstack([ts[:, :, (bands[0]-1)], ts[:, :, (bands[1]-1)], ts[:, :, (bands[2]-1)]])
     
     if stretch == 'std':
         
