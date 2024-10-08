@@ -91,7 +91,7 @@ def test_crop():
     # The raster name
     output_name = 'LC08_232066_20190727_clip'
     # Applying the crop() function:
-    crop(image = path_raster, shp = path_shp, 
+    crop(image = path_raster, vector = path_shp, 
          filename = output_name, 
          filepath = output_path_raster)
     clip_image = rasterio.open(output_path_raster + '/' + output_name+ '.tif')
