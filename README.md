@@ -11,11 +11,18 @@
 [![tests](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml/badge.svg)](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml)
 <a href="https://joss.theoj.org/papers/46bccc5be81d7ea886e05807cfe6790c"><img src="https://joss.theoj.org/papers/46bccc5be81d7ea886e05807cfe6790c/status.svg"></a>
 
-
-
 <img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/scikit-eo_logo.jpg" align="right" width="220"/>
 
+# Journal of Open Source Software
+
+## Citation
+
+Please, to cite the ```scikit-eo``` package in publications, use this paper:
+
+Tarazona, Y., Benitez-Paez, F., Nowosad, J., Drenkhan, F., Nowosad, J., and Timaná, M. (2024). **scikit-eo: A Python package for Remote Sensing Data Analysis**. *Journal of Open Source Software*, 9(99), 6692. DOI: [10.21105/joss.06692](https://joss.theoj.org/papers/10.21105/joss.06692)
+
 <!-- #region -->
+
 # Introduction
 
 Nowadays, remotely sensed data has increased dramatically. Microwaves and optical images with different spatial and temporal resolutions are available and are used to monitor a variety of environmental issues such as deforestation, land degradation, land use and land cover change, among others. Although there are efforts (i.e., Python packages, forums, communities, etc.) to make available line-of-code tools for pre-processing, processing and analysis of satellite imagery, there is still a gap that needs to be filled. In other words, too much time is still spent by many users developing Python lines of code. Algorithms for mapping land degradation through a linear trend of vegetation indices, fusion optical and radar images to classify vegetation cover, and calibration of machine learning algorithms, among others, are not available yet.
