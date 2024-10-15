@@ -13,8 +13,6 @@
 
 <img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/scikit-eo_logo.jpg" align="right" width="220"/>
 
-<!-- #region -->
-
 # Journal of Open Source Software
 
 ## Citation
@@ -22,6 +20,8 @@
 Please, to cite the ```scikit-eo``` package in publications, use this paper:
 
 Tarazona, Y., Benitez-Paez, F., Nowosad, J., Drenkhan, F., Nowosad, J., and Timaná, M. (2024). **scikit-eo: A Python package for Remote Sensing Data Analysis**. *Journal of Open Source Software*, 9(99), 6692. DOI: [10.21105/joss.06692](https://joss.theoj.org/papers/10.21105/joss.06692)
+
+<!-- #region -->
 
 # Introduction
 
