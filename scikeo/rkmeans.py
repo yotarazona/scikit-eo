@@ -52,7 +52,7 @@ def rkmeans(image, k, nodata = -99999, **kwargs):
     if np.isnan(np.sum(arr)):
         arr[np.isnan(arr)] = self.nodata
     
-    kmeans = KMeans(**kwargs) # max_iter=300 by default
+    kmeans = KMeans(n_clusters=k, **kwargs) # max_iter=300 by default
     kmeans.fit(arr)
     
     labels_km = kmeans.labels_
