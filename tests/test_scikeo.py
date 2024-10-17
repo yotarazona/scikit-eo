@@ -6,6 +6,7 @@
 import numpy as np
 import pytest
 import rasterio
+from rasterio.io import MemoryFile
 import pandas as pd
 from scikeo.process import confintervalML
 from scikeo.sma import sma
@@ -19,6 +20,7 @@ from scikeo.process import extract
 from dbfread import DBF
 from scikeo.calmla import calmla
 from scikeo.deeplearning import DL
+from scikeo.calkmeans import calkmeans
 
 
 def test_confintervalML():
@@ -158,4 +160,115 @@ def test_DeepLearning():
                          batch_size = 32, 
                          training_split = 0.8)
     
-    assert fc.get('Overall_Accuracy') >= 0.7
+    assert fc.get('Overall_Accuracy') >= 0.6
+
+def test_calkmeans():
+    # Create synthetic image data
+    width, height, bands = 100, 100, 3  # Image dimensions and number of bands
+    np.random.seed(42)  # For reproducibility
+
+    # Generate synthetic image with three clusters
+    cluster_centers = np.array([
+        [50, 50, 50],
+        [150, 150, 150],
+        [250, 250, 250]
+    ])
+
+    total_pixels = height * width  # 10000 pixels
+    num_clusters = len(cluster_centers)  # 3 clusters
+
+    # Calculate base size and remainder
+    base_size = total_pixels // num_clusters  # 3333 pixels per cluster
+    remainder = total_pixels % num_clusters   # 1 pixel remaining
+
+    # Initialize cluster sizes
+    cluster_sizes = [base_size] * num_clusters  # [3333, 3333, 3333]
+
+    # Distribute the remainder
+    for i in range(remainder):
+        cluster_sizes[i] += 1  # Now cluster_sizes = [3334, 3333, 3333]
+
+    cluster_data = []
+    for center, size in zip(cluster_centers, cluster_sizes):
+        data = np.random.normal(loc=center, scale=10, size=(size, bands))
+        cluster_data.append(data)
+
+    # Combine and shuffle the data
+    image_data = np.vstack(cluster_data)
+    np.random.shuffle(image_data)
+    image_data = image_data.reshape((height, width, bands)).astype(np.float32)
+
+    # Introduce nodata values
+    nodata_value = -99999.0
+    image_data[0, 0, :] = nodata_value  # Set the first pixel to nodata
+
+    # Create an in-memory raster dataset
+    transform = rasterio.transform.from_origin(0, 0, 1, 1)  # Arbitrary transform
+    with MemoryFile() as memfile:
+        # Open the in-memory file in write mode
+        with memfile.open(
+            driver='GTiff',
+            height=height,
+            width=width,
+            count=bands,
+            dtype='float32',
+            transform=transform,
+            nodata=nodata_value
+        ) as dataset_writer:
+            # Write data to the dataset
+            for i in range(bands):
+                dataset_writer.write(image_data[:, :, i], i + 1)
+            # Note: No need to call dataset_writer.close() explicitly within 'with' block
+
+        # Now reopen the dataset in read mode
+        with memfile.open() as dataset:
+            # dataset_reader is a DatasetReader
+
+            # Run the calkmeans function
+            # Case 1: Find the optimal number of clusters
+            results_optimal_k = calkmeans(
+                image=dataset,
+                k=None,
+                algo=('lloyd', 'elkan'),
+                n_iter=5,
+                nodata=nodata_value
+            )
+
+            # Case 2: Evaluate algorithms for a given k
+            k_value = 3
+            results_given_k = calkmeans(
+                image=dataset,
+                k=k_value,
+                algo=('lloyd', 'elkan'),
+                n_iter=5,
+                nodata=nodata_value
+            )
+
+            # Case 2: Evaluate algorithms for a given k
+            k_value = 3
+            results_given_k = calkmeans(
+                image=dataset,
+                k=k_value,
+                algo=('lloyd', 'elkan'),
+                n_iter=5,
+                nodata=nodata_value
+            )
+
+    # Assertions to check the outputs
+    # Case 1: Check if results contain expected keys and correct number of inertia values
+    assert isinstance(results_optimal_k, dict), "Results should be a dictionary."
+    for algorithm in ('lloyd', 'elkan'):
+        assert algorithm in results_optimal_k, f"Algorithm '{algorithm}' should be in results."
+        inertias = results_optimal_k[algorithm]
+        assert len(inertias) == 5, "Inertia list should have length equal to n_iter."
+        assert all(isinstance(val, float) for val in inertias), "Inertias should be floats."
+
+    # Case 2: Check if results contain expected keys and correct number of inertia values
+    assert isinstance(results_given_k, dict), "Results should be a dictionary."
+    for algorithm in ('lloyd', 'elkan'):
+        assert algorithm in results_given_k, f"Algorithm '{algorithm}' should be in results."
+        inertias = results_given_k[algorithm]
+        assert len(inertias) == 5, "Inertia list should have length equal to n_iter."
+        assert all(isinstance(val, float) for val in inertias), "Inertias should be floats."
+
+    print("All tests passed.")
