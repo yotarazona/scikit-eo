@@ -287,7 +287,7 @@ def confintervalML(matrix, image_pred, pixel_size = 10, conf = 1.96, nodata = No
     namesRow.extend(['Total'])
 
     # error matrix (DataFrame) in proportions of area
-    cm_prop_area = pd.DataFrame(np.round(mat_conf, 4), columns = namesCol, index = namesRow)
+    cm_prop_area = pd.DataFrame(np.round(mat_conf, 6), columns = namesCol, index = namesRow)
     
     # overall accuracy
     oa = np.diag(matConf).sum()/np.sum(matConf)
@@ -355,15 +355,15 @@ def print_info(params):
     print('***** Confusion Matrix by Estimated Proportions of area an uncertainty*****')
     print('')
     print('Overall accuracy with 95%')
-    print(f'{oa:.4f} ± {e:.4f}')
+    print(f'{oa:.6f} ± {e:.6f}')
     print('')
     print('Confusion matrix')
     print(matrixCEA)
     print('')
     print('User´s accuracy with 95%')
     for i in range(b.shape[0]):
-        print(f'{f[i]}: {a[i]:.4f} ± {b[i]:.4f}')
+        print(f'{f[i]}: {a[i]:.6f} ± {b[i]:.6f}')
     print('')
     print('Estimating area (Ha) and uncertainty with 95%')
     for i in range(b.shape[0]):
-        print(f'{f[i]}: {c[i]:.4f} ± {d[i]:.4f}')
+        print(f'{f[i]}: {c[i]:.6f} ± {d[i]:.6f}')
