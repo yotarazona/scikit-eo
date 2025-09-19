@@ -9,19 +9,22 @@ import rasterio
 from rasterio.windows import Window
 import os
 
-def process_raster_patches(raster_path, label_path=None, patch_size=256, 
-                          normalize=False, export_patches=False, output_dir=None,
-                          padding_mode='constant', padding_value=0):
+def processing(raster_path, label_path=None, patch_size=256, 
+               export_patches=False, output_dir=None,
+               export_labels=False, labels_output_dir=None,
+               padding_mode='constant', padding_value=0):
     """
     Lee raster y etiquetas, divide en parches con padding si es necesario
+    SIN normalización y SIN manejo de datos nulos
     
     Args:
         raster_path (str): Ruta al archivo raster
         label_path (str, optional): Ruta al archivo de etiquetas
         patch_size (int): Tamaño de los parches
-        normalize (bool): Si se debe normalizar los datos
-        export_patches (bool): Si se deben exportar los parches
-        output_dir (str, optional): Directorio para exportar parches
+        export_patches (bool): Si se deben exportar los parches de imagen
+        output_dir (str, optional): Directorio para exportar parches de imagen
+        export_labels (bool): Si se deben exportar los parches de etiquetas
+        labels_output_dir (str, optional): Directorio para exportar parches de etiquetas
         padding_mode (str): 'constant' o 'reflect'
         padding_value: Valor para relleno constante
     
@@ -34,9 +37,11 @@ def process_raster_patches(raster_path, label_path=None, patch_size=256,
         profile = src.profile
         height, width = src.height, src.width
         n_bands = src.count
+        transform = src.transform
+        # Se preservan los valores nodata originales
     
     # Mover bandas a la última dimensión
-    raster_data = np.moveaxis(raster_data, 0, -1)
+    raster_data = np.moveaxis(raster_data, 0, -1)  # Forma: (height, width, n_bands)
     
     # Calcular número de parches necesarios (redondeando hacia arriba)
     n_patches_h = (height + patch_size - 1) // patch_size
@@ -54,14 +59,18 @@ def process_raster_patches(raster_path, label_path=None, patch_size=256,
             raster_data = np.pad(raster_data, ((0, pad_h), (0, pad_w), (0, 0)), 
                                 mode='constant', constant_values=padding_value)
     
-    # Crear array para parches
+    # Crear array para parches de imagen
     X_patches = np.zeros((total_patches, patch_size, patch_size, n_bands), dtype=raster_data.dtype)
     
-    # Leer y aplicar padding a etiquetas si están disponibles
+    # Leer etiquetas si están disponibles (sin modificación)
     if label_path is not None:
         with rasterio.open(label_path) as src:
-            label_data = src.read(1)
+            label_data = src.read(1)  # Leer como array 2D
+            label_profile = src.profile
+            label_transform = src.transform
+            # Se preservan los valores nodata originales de las etiquetas
         
+        # Aplicar padding a etiquetas
         if pad_h > 0 or pad_w > 0:
             if padding_mode == 'reflect':
                 label_data = np.pad(label_data, ((0, pad_h), (0, pad_w)), mode='reflect')
@@ -69,7 +78,8 @@ def process_raster_patches(raster_path, label_path=None, patch_size=256,
                 label_data = np.pad(label_data, ((0, pad_h), (0, pad_w)), 
                                    mode='constant', constant_values=padding_value)
         
-        y_patches = np.zeros((total_patches, patch_size, patch_size), dtype=label_data.dtype)
+        # y_patches con 4 dimensiones: (batch, height, width, 1)
+        y_patches = np.zeros((total_patches, patch_size, patch_size, 1), dtype=label_data.dtype)
     
     # Extraer parches
     patch_idx = 0
@@ -80,46 +90,51 @@ def process_raster_patches(raster_path, label_path=None, patch_size=256,
             x_start = j * patch_size
             x_end = x_start + patch_size
             
-            # Extraer parche
+            # Extraer parche de IMAGEN (tal cual, sin modificación)
             patch = raster_data[y_start:y_end, x_start:x_end, :]
             X_patches[patch_idx] = patch
             
-            # Extraer parche de etiquetas si está disponible
+            # Extraer parche de ETIQUETAS (tal cual, sin modificación)
             if label_path is not None:
                 label_patch = label_data[y_start:y_end, x_start:x_end]
-                y_patches[patch_idx] = label_patch
+                y_patches[patch_idx, :, :, 0] = label_patch
             
-            # Exportar parches si está habilitado
+            # Exportar parches de imagen si está habilitado
             if export_patches and output_dir is not None:
-                _export_patch(patch, patch_idx, output_dir, profile, patch_size)
+                patch_transform = rasterio.windows.transform(
+                    Window(x_start, y_start, patch_size, patch_size), 
+                    transform
+                )
+                _export_patch(patch, patch_idx, output_dir, profile, patch_size, patch_transform)
+            
+            # Exportar parches de etiquetas si está habilitado
+            if label_path is not None and export_labels and labels_output_dir is not None:
+                label_patch_transform = rasterio.windows.transform(
+                    Window(x_start, y_start, patch_size, patch_size), 
+                    label_transform
+                )
+                _export_label_patch(label_patch, patch_idx, labels_output_dir, 
+                                   label_profile, patch_size, label_patch_transform)
             
             patch_idx += 1
     
-    if normalize:
-        min_val = np.min(X_patches)
-        max_val = np.max(X_patches)
-        if max_val > min_val:
-            X_patches = (X_patches - min_val) / (max_val - min_val)
-    
     if label_path is not None:
-        return X_patches, y_patches  # Solo devuelve 2 valores ahora
+        return X_patches, y_patches
     else:
-        return X_patches  # Solo devuelve 1 valor
+        return X_patches
 
-def _export_patch(patch, patch_idx, output_dir, profile, patch_size):
-    """Exporta un parche como archivo TIFF (función interna)"""
+def _export_patch(patch, patch_idx, output_dir, profile, patch_size, patch_transform):
+    """Exporta un parche de imagen como archivo TIFF con datos originales"""
     # Reorganizar dimensiones para rasterio
     patch_export = np.moveaxis(patch, -1, 0)
     
-    # Actualizar perfil
+    # Actualizar perfil manteniendo metadatos originales
     patch_profile = profile.copy()
     patch_profile.update({
         'height': patch_size,
         'width': patch_size,
-        'transform': rasterio.windows.transform(
-            Window(0, 0, patch_size, patch_size), 
-            patch_profile['transform']
-        )
+        'transform': patch_transform
+        # Se preservan dtype, nodata, y otros metadatos originales
     })
     
     # Crear directorio si no existe
@@ -129,6 +144,27 @@ def _export_patch(patch, patch_idx, output_dir, profile, patch_size):
     output_path = os.path.join(output_dir, f'patch_{patch_idx:04d}.tif')
     with rasterio.open(output_path, 'w', **patch_profile) as dst:
         dst.write(patch_export.astype(patch_profile['dtype']))
+
+def _export_label_patch(label_patch, patch_idx, output_dir, profile, patch_size, patch_transform):
+    """Exporta un parche de etiqueta como archivo TIFF con datos originales"""
+    # Actualizar perfil para etiquetas
+    label_profile = profile.copy()
+    label_profile.update({
+        'height': patch_size,
+        'width': patch_size,
+        'count': 1,
+        'dtype': label_patch.dtype,
+        'transform': patch_transform
+        # Se preservan metadatos originales
+    })
+    
+    # Crear directorio si no existe
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Guardar parche de etiqueta
+    output_path = os.path.join(output_dir, f'label_patch_{patch_idx:04d}.tif')
+    with rasterio.open(output_path, 'w', **label_profile) as dst:
+        dst.write(label_patch.astype(label_profile['dtype']), 1)
 
 
 import tensorflow as tf
@@ -254,6 +290,7 @@ def train_unet(X_train, y_train, input_shape, num_classes,
         )
     
     return model, history
+    
 
 def train_deeplabv3(X_train, y_train, input_shape, num_classes, 
                    dropout_rate=0.2, learning_rate=1e-4, batch_size=16, 
