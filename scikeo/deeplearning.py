@@ -1,264 +1,493 @@
 # +
-import copy
-import rasterio
 import numpy as np
-import pandas as pd
-from dbfread import DBF
-from tensorflow import keras
-from keras import models
-from keras import layers
-from keras.utils import to_categorical
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import cohen_kappa_score
-from sklearn.metrics import confusion_matrix
+import rasterio
+from rasterio.windows import Window
+import os
 
-class DL(object):
+def process_raster_patches(raster_path, label_path=None, patch_size=256, 
+                          normalize=False, export_patches=False, output_dir=None,
+                          padding_mode='constant', padding_value=0):
+    """
+    Lee raster y etiquetas, divide en parches con padding si es necesario
     
-    'Deep Learning classification in Remote Sensing'
+    Args:
+        raster_path (str): Ruta al archivo raster
+        label_path (str, optional): Ruta al archivo de etiquetas
+        patch_size (int): Tamaño de los parches
+        normalize (bool): Si se debe normalizar los datos
+        export_patches (bool): Si se deben exportar los parches
+        output_dir (str, optional): Directorio para exportar parches
+        padding_mode (str): 'constant' o 'reflect'
+        padding_value: Valor para relleno constante
     
-    def __init__(self, image, endmembers, nodata = -99999):
-        
-        '''
-        Parameter:
-        
-            image: Optical images. It must be rasterio.io.DatasetReader with 3d.
-            
-            endmembers: Endmembers must be a matrix (numpy.ndarray) and with more than one endmember. 
-                    Rows represent the endmembers and columns represent the spectral bands.
-                    The number of bands must be equal to the number of endmembers.
-                    E.g. an image with 6 bands, endmembers dimension should be $n*6$, where $n$ 
-                    is rows with the number of endmembers and 6 is the number of bands 
-                    (should be equal).
-                    In addition, Endmembers must have a field (type int or float) with the names 
-                    of classes to be predicted.
-            
-            nodata: The NoData value to replace with -99999.
-            
-        '''
-        
-        self.image = image
-        self.endm = endmembers
-        self.nodata = nodata
-        
-        if not isinstance(self.image, (rasterio.io.DatasetReader)):
-            raise TypeError('"image" must be raster read by rasterio.open().')
-        
-        bands = self.image.count
-        
-        rows = self.image.height
-        
-        cols = self.image.width
-        
-        st = image.read()
-        
-        # data in [rows, cols, bands]
-        st_reorder = np.moveaxis(st, 0, -1) 
-        # data in [rows*cols, bands]
-        arr = st_reorder.reshape((rows*cols, bands))
-
-        # nodata
-        #if np.isnan(np.sum(arr)):
-            #arr[np.isnan(arr)] = self.nodata
-        
-        # dealing with nan
-        key_nan = np.isnan(np.sum(arr[:,0]))
-        
-        if key_nan:
-            # saving an array for predicted classes
-            class_final = arr[:, 0].copy()
-            # positions with nan
-            posIndx = np.argwhere(~np.isnan(class_final)).flatten()
-            # replace np.nan -> 0
-            arr[np.isnan(arr)] = 0
-            
-        # if it is read by pandas.read_csv()
-        if isinstance(self.endm, (pd.core.frame.DataFrame)):
-            
-            for i in np.arange(self.endm.shape[1]):
-                
-                if all(self.endm.iloc[:,int(i)] < 100) & all(self.endm.iloc[:,int(i)] >= 0): indx = i; break
-        
-        # if the file is .dbf    
-        elif isinstance(self.endm, (DBF)): # isinstance() function With Inheritance
-            
-            self.endm = pd.DataFrame(iter(self.endm))
-            
-            for i in np.arange(self.endm.shape[1]):
-                
-                if all(self.endm.iloc[:,int(i)] < 100) & all(self.endm.iloc[:,int(i)] >= 0): indx = i; break
-        
+    Returns:
+        tuple: (X_patches, y_patches) o X_patches si no hay etiquetas
+    """
+    # Leer raster
+    with rasterio.open(raster_path) as src:
+        raster_data = src.read()
+        profile = src.profile
+        height, width = src.height, src.width
+        n_bands = src.count
+    
+    # Mover bandas a la última dimensión
+    raster_data = np.moveaxis(raster_data, 0, -1)
+    
+    # Calcular número de parches necesarios (redondeando hacia arriba)
+    n_patches_h = (height + patch_size - 1) // patch_size
+    n_patches_w = (width + patch_size - 1) // patch_size
+    total_patches = n_patches_h * n_patches_w
+    
+    # Aplicar padding si es necesario
+    pad_h = (n_patches_h * patch_size - height) if height % patch_size != 0 else 0
+    pad_w = (n_patches_w * patch_size - width) if width % patch_size != 0 else 0
+    
+    if pad_h > 0 or pad_w > 0:
+        if padding_mode == 'reflect':
+            raster_data = np.pad(raster_data, ((0, pad_h), (0, pad_w), (0, 0)), mode='reflect')
         else:
-            raise TypeError('"endm" must be .csv (pandas.core.frame.DataFrame).')
+            raster_data = np.pad(raster_data, ((0, pad_h), (0, pad_w), (0, 0)), 
+                                mode='constant', constant_values=padding_value)
+    
+    # Crear array para parches
+    X_patches = np.zeros((total_patches, patch_size, patch_size, n_bands), dtype=raster_data.dtype)
+    
+    # Leer y aplicar padding a etiquetas si están disponibles
+    if label_path is not None:
+        with rasterio.open(label_path) as src:
+            label_data = src.read(1)
+        
+        if pad_h > 0 or pad_w > 0:
+            if padding_mode == 'reflect':
+                label_data = np.pad(label_data, ((0, pad_h), (0, pad_w)), mode='reflect')
+            else:
+                label_data = np.pad(label_data, ((0, pad_h), (0, pad_w)), 
+                                   mode='constant', constant_values=padding_value)
+        
+        y_patches = np.zeros((total_patches, patch_size, patch_size), dtype=label_data.dtype)
+    
+    # Extraer parches
+    patch_idx = 0
+    for i in range(n_patches_h):
+        for j in range(n_patches_w):
+            y_start = i * patch_size
+            y_end = y_start + patch_size
+            x_start = j * patch_size
+            x_end = x_start + patch_size
+            
+            # Extraer parche
+            patch = raster_data[y_start:y_end, x_start:x_end, :]
+            X_patches[patch_idx] = patch
+            
+            # Extraer parche de etiquetas si está disponible
+            if label_path is not None:
+                label_patch = label_data[y_start:y_end, x_start:x_end]
+                y_patches[patch_idx] = label_patch
+            
+            # Exportar parches si está habilitado
+            if export_patches and output_dir is not None:
+                _export_patch(patch, patch_idx, output_dir, profile, patch_size)
+            
+            patch_idx += 1
+    
+    if normalize:
+        min_val = np.min(X_patches)
+        max_val = np.max(X_patches)
+        if max_val > min_val:
+            X_patches = (X_patches - min_val) / (max_val - min_val)
+    
+    if label_path is not None:
+        return X_patches, y_patches, (height, width)  # Devolver también dimensiones originales
+    else:
+        return X_patches, (height, width)
 
-        if not self.endm.shape[1] == (bands + 1):
-            raise ValueError('The number of columns of signatures (included the class column) must'
-                             'be equal to the number of bands + 1.')
+def _export_patch(patch, patch_idx, output_dir, profile, patch_size):
+    """Exporta un parche como archivo TIFF (función interna)"""
+    # Reorganizar dimensiones para rasterio
+    patch_export = np.moveaxis(patch, -1, 0)
+    
+    # Actualizar perfil
+    patch_profile = profile.copy()
+    patch_profile.update({
+        'height': patch_size,
+        'width': patch_size,
+        'transform': rasterio.windows.transform(
+            Window(0, 0, patch_size, patch_size), 
+            patch_profile['transform']
+        )
+    })
+    
+    # Guardar parche
+    output_path = os.path.join(output_dir, f'patch_{patch_idx}.tif')
+    with rasterio.open(output_path, 'w', **patch_profile) as dst:
+        dst.write(patch_export.astype(patch_profile['dtype']))
+
+
+import tensorflow as tf
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, Dropout, UpSampling2D, concatenate
+from tensorflow.keras.layers import Conv2DTranspose, BatchNormalization, Activation
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.utils import to_categorical
+
+def train_unet(X_train, y_train, input_shape, num_classes, 
+               dropout_rate=0.2, learning_rate=1e-4, batch_size=16, 
+               epochs=50, validation_data=None, data_augmentation=False):
+    """
+    Entrena un modelo U-Net
+    
+    Args:
+        X_train (np.array): Parches de entrenamiento
+        y_train (np.array): Etiquetas de entrenamiento
+        input_shape (tuple): Forma de entrada (alto, ancho, canales)
+        num_classes (int): Número de clases
+        dropout_rate (float): Tasa de dropout (default: 0.2)
+        learning_rate (float): Tasa de aprendizaje (default: 1e-4)
+        batch_size (int): Tamaño del lote (default: 16)
+        epochs (int): Número de épocas (default: 50)
+        validation_data (tuple): Datos de validación (X_val, y_val) (opcional)
+        data_augmentation (bool): Si se debe usar aumento de datos (default: False)
+    
+    Returns:
+        Model: Modelo entrenado
+        History: Historial de entrenamiento
+    """
+    # Construir modelo U-Net
+    inputs = Input(input_shape)
+    
+    # Encoder
+    conv1 = Conv2D(64, 3, activation='relu', padding='same')(inputs)
+    conv1 = Conv2D(64, 3, activation='relu', padding='same')(conv1)
+    pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
+    pool1 = Dropout(dropout_rate)(pool1)
+    
+    conv2 = Conv2D(128, 3, activation='relu', padding='same')(pool1)
+    conv2 = Conv2D(128, 3, activation='relu', padding='same')(conv2)
+    pool2 = MaxPooling2D(pool_size=(2, 2))(conv2)
+    pool2 = Dropout(dropout_rate)(pool2)
+    
+    conv3 = Conv2D(256, 3, activation='relu', padding='same')(pool2)
+    conv3 = Conv2D(256, 3, activation='relu', padding='same')(conv3)
+    pool3 = MaxPooling2D(pool_size=(2, 2))(conv3)
+    pool3 = Dropout(dropout_rate)(pool3)
+    
+    # Middle
+    conv4 = Conv2D(512, 3, activation='relu', padding='same')(pool3)
+    conv4 = Conv2D(512, 3, activation='relu', padding='same')(conv4)
+    
+    # Decoder
+    up5 = Conv2DTranspose(256, 2, strides=(2, 2), padding='same')(conv4)
+    up5 = concatenate([up5, conv3])
+    conv5 = Conv2D(256, 3, activation='relu', padding='same')(up5)
+    conv5 = Conv2D(256, 3, activation='relu', padding='same')(conv5)
+    conv5 = Dropout(dropout_rate)(conv5)
+    
+    up6 = Conv2DTranspose(128, 2, strides=(2, 2), padding='same')(conv5)
+    up6 = concatenate([up6, conv2])
+    conv6 = Conv2D(128, 3, activation='relu', padding='same')(up6)
+    conv6 = Conv2D(128, 3, activation='relu', padding='same')(conv6)
+    conv6 = Dropout(dropout_rate)(conv6)
+    
+    up7 = Conv2DTranspose(64, 2, strides=(2, 2), padding='same')(conv6)
+    up7 = concatenate([up7, conv1])
+    conv7 = Conv2D(64, 3, activation='relu', padding='same')(up7)
+    conv7 = Conv2D(64, 3, activation='relu', padding='same')(conv7)
+    conv7 = Dropout(dropout_rate)(conv7)
+    
+    # Output
+    if num_classes == 1:
+        activation = 'sigmoid'
+        loss = 'binary_crossentropy'
+    else:
+        activation = 'softmax'
+        loss = 'categorical_crossentropy'
+    
+    outputs = Conv2D(num_classes, 1, activation=activation)(conv7)
+    
+    # Compilar modelo
+    model = Model(inputs=inputs, outputs=outputs)
+    model.compile(optimizer=Adam(learning_rate=learning_rate),
+                 loss=loss,
+                 metrics=['accuracy'])
+    
+    # Preparar etiquetas
+    if num_classes > 1:
+        y_train_cat = to_categorical(y_train, num_classes)
+        if validation_data is not None:
+            X_val, y_val = validation_data
+            validation_data = (X_val, to_categorical(y_val, num_classes))
+    else:
+        y_train_cat = y_train
+    
+    # Entrenar modelo
+    if data_augmentation:
+        datagen = ImageDataGenerator(
+            rotation_range=20,
+            width_shift_range=0.1,
+            height_shift_range=0.1,
+            horizontal_flip=True,
+            vertical_flip=True,
+            fill_mode='constant'
+        )
         
-        self.indx = indx
+        history = model.fit(
+            datagen.flow(X_train, y_train_cat, batch_size=batch_size),
+            steps_per_epoch=len(X_train) // batch_size,
+            epochs=epochs,
+            validation_data=validation_data
+        )
+    else:
+        history = model.fit(
+            X_train, y_train_cat,
+            batch_size=batch_size,
+            epochs=epochs,
+            validation_data=validation_data
+        )
+    
+    return model, history
+
+def train_deeplabv3(X_train, y_train, input_shape, num_classes, 
+                   dropout_rate=0.2, learning_rate=1e-4, batch_size=16, 
+                   epochs=50, validation_data=None, data_augmentation=False):
+    """
+    Entrena un modelo DeepLabV3 (versión simplificada)
+    
+    Args:
+        X_train (np.array): Parches de entrenamiento
+        y_train (np.array): Etiquetas de entrenamiento
+        input_shape (tuple): Forma de entrada (alto, ancho, canales)
+        num_classes (int): Número de clases
+        dropout_rate (float): Tasa de dropout (default: 0.2)
+        learning_rate (float): Tasa de aprendizaje (default: 1e-4)
+        batch_size (int): Tamaño del lote (default: 16)
+        epochs (int): Número de épocas (default: 50)
+        validation_data (tuple): Datos de validación (X_val, y_val) (opcional)
+        data_augmentation (bool): Si se debe usar aumento de datos (default: False)
+    
+    Returns:
+        Model: Modelo entrenado
+        History: Historial de entrenamiento
+    """
+    # Construir modelo DeepLabV3 simplificado
+    inputs = Input(input_shape)
+    
+    # Encoder con atrous convolutions
+    x = Conv2D(64, 3, dilation_rate=1, padding='same', activation='relu')(inputs)
+    x = Dropout(dropout_rate)(x)
+    x = Conv2D(128, 3, dilation_rate=2, padding='same', activation='relu')(x)
+    x = Dropout(dropout_rate)(x)
+    x = Conv2D(256, 3, dilation_rate=4, padding='same', activation='relu')(x)
+    x = Dropout(dropout_rate)(x)
+    
+    # ASPP simplificado
+    branch1 = Conv2D(256, 1, padding='same', activation='relu')(x)
+    branch2 = Conv2D(256, 3, dilation_rate=6, padding='same', activation='relu')(x)
+    branch3 = Conv2D(256, 3, dilation_rate=12, padding='same', activation='relu')(x)
+    
+    # Concatenar branches
+    x = concatenate([branch1, branch2, branch3])
+    x = Conv2D(256, 1, padding='same', activation='relu')(x)
+    x = Dropout(dropout_rate)(x)
+    
+    # Output
+    if num_classes == 1:
+        activation = 'sigmoid'
+        loss = 'binary_crossentropy'
+    else:
+        activation = 'softmax'
+        loss = 'categorical_crossentropy'
+    
+    outputs = Conv2D(num_classes, 1, activation=activation)(x)
+    
+    # Compilar modelo
+    model = Model(inputs=inputs, outputs=outputs)
+    model.compile(optimizer=Adam(learning_rate=learning_rate),
+                 loss=loss,
+                 metrics=['accuracy'])
+    
+    # Preparar etiquetas y entrenar (similar a train_unet)
+    if num_classes > 1:
+        y_train_cat = to_categorical(y_train, num_classes)
+        if validation_data is not None:
+            X_val, y_val = validation_data
+            validation_data = (X_val, to_categorical(y_val, num_classes))
+    else:
+        y_train_cat = y_train
+    
+    # Entrenar modelo
+    if data_augmentation:
+        datagen = ImageDataGenerator(
+            rotation_range=20,
+            width_shift_range=0.1,
+            height_shift_range=0.1,
+            horizontal_flip=True,
+            vertical_flip=True,
+            fill_mode='constant'
+        )
         
-        self.arr = arr
+        history = model.fit(
+            datagen.flow(X_train, y_train_cat, batch_size=batch_size),
+            steps_per_epoch=len(X_train) // batch_size,
+            epochs=epochs,
+            validation_data=validation_data
+        )
+    else:
+        history = model.fit(
+            X_train, y_train_cat,
+            batch_size=batch_size,
+            epochs=epochs,
+            validation_data=validation_data
+        )
+    
+    return model, history
+
+
+from sklearn.metrics import confusion_matrix, accuracy_score
+
+def predict_raster(model, raster_path, patch_size=256, output_path=None):
+    """
+    Realiza predicción sobre un raster completo
+    
+    Args:
+        model: Modelo entrenado
+        raster_path (str): Ruta al raster a predecir
+        patch_size (int): Tamaño de los parches (default: 256)
+        output_path (str, optional): Ruta para guardar la predicción
+    
+    Returns:
+        np.array: Predicción completa
+    """
+    # Preprocesar imagen
+    X_patches = process_raster_patches(raster_path, patch_size=patch_size, normalize=True)
+    
+    # Realizar predicción
+    predictions = model.predict(X_patches)
+    
+    # Reconstruir imagen completa
+    full_prediction = _reconstruct_image(predictions, raster_path, patch_size)
+    
+    # Guardar predicción si se especifica
+    if output_path is not None:
+        _save_prediction(full_prediction, raster_path, output_path)
+    
+    return full_prediction
+
+def calculate_metrics(prediction, reference_path):
+    """
+    Calcula métricas de evaluación comparando con referencia
+    
+    Args:
+        prediction (np.array): Predicción a evaluar
+        reference_path (str): Ruta al raster de referencia
+    
+    Returns:
+        dict: Métricas de evaluación
+    """
+    # Leer referencia
+    with rasterio.open(reference_path) as src:
+        reference = src.read(1)
+    
+    # Asegurar que las dimensiones coincidan
+    if reference.shape != prediction.shape[:2]:
+        from skimage.transform import resize
+        prediction = resize(prediction, reference.shape, order=0, preserve_range=True)
+    
+    # Binarizar predicción si es necesario
+    if len(prediction.shape) > 2 and prediction.shape[2] > 1:
+        # Para múltiples clases, tomar la clase con mayor probabilidad
+        prediction = np.argmax(prediction, axis=2)
+    elif len(prediction.shape) == 2:
+        # Para binario, umbralizar en 0.5
+        prediction = (prediction > 0.5).astype(np.uint8)
+    
+    # Aplanar arrays para cálculo de métricas
+    pred_flat = prediction.flatten()
+    ref_flat = reference.flatten()
+    
+    # Calcular matriz de confusión
+    cm = confusion_matrix(ref_flat, pred_flat)
+    
+    # Calcular métricas para cada clase
+    metrics = {}
+    n_classes = cm.shape[0]
+    
+    for i in range(n_classes):
+        tp = cm[i, i]
+        fp = cm[:, i].sum() - tp
+        fn = cm[i, :].sum() - tp
+        tn = cm.sum() - tp - fp - fn
         
-        self.rows = rows
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+        iou = tp / (tp + fp + fn) if (tp + fp + fn) > 0 else 0
+        dice = (2 * tp) / (2 * tp + fp + fn) if (2 * tp + fp + fn) > 0 else 0
         
-        self.cols = cols
-        
-        if key_nan:
-            self.key_nan = key_nan
-            self.posIndx = posIndx
-            self.class_final = class_final
+        metrics[f'class_{i}'] = {
+            'precision': precision,
+            'recall': recall,
+            'iou': iou,
+            'dice': dice
+        }
+    
+    # Calcular accuracy general
+    metrics['overall_accuracy'] = accuracy_score(ref_flat, pred_flat)
+    metrics['confusion_matrix'] = cm
+    
+    return metrics
+
+
+def reconstruct_with_unpatchify(patches, original_shape, patch_size):
+    """
+    Reconstruye imagen usando enfoque unpatchify
+    
+    Args:
+        patches: Array de parches de forma (n, patch_size, patch_size, c)
+        original_shape: Forma original de la imagen (height, width)
+        patch_size: Tamaño de los parches
+    
+    Returns:
+        Imagen reconstruida
+    """
+    from patchify import unpatchify
+    
+    # Calcular la grilla de parches
+    n_patches_h = (original_shape[0] + patch_size - 1) // patch_size
+    n_patches_w = (original_shape[1] + patch_size - 1) // patch_size
+    
+    # Reorganizar parches en forma de grilla
+    patches_grid = patches.reshape((n_patches_h, n_patches_w, patch_size, patch_size, -1))
+    
+    # Reconstruir imagen
+    reconstructed = unpatchify(patches_grid, (n_patches_h * patch_size, n_patches_w * patch_size, patches.shape[-1]))
+    
+    # Recortar a tamaño original si se usó padding
+    if reconstructed.shape[0] > original_shape[0] or reconstructed.shape[1] > original_shape[1]:
+        reconstructed = reconstructed[:original_shape[0], :original_shape[1]]
+    
+    return reconstructed
+    
+
+def _save_prediction(prediction, raster_path, output_path):
+    """Guarda la predicción como raster (función interna)"""
+    with rasterio.open(raster_path) as src:
+        profile = src.profile
+    
+    # Actualizar perfil para la predicción
+    profile.update(
+        dtype=rasterio.float32,
+        count=1 if len(prediction.shape) == 2 else prediction.shape[2],
+        nodata=0
+    )
+    
+    # Guardar predicción
+    with rasterio.open(output_path, 'w', **profile) as dst:
+        if len(prediction.shape) == 2:
+            dst.write(prediction.astype(np.float32), 1)
         else:
-            self.key_nan = key_nan
-        
-    def FullyConnected(self, hidden_layers = 3, hidden_units = [64, 32, 16], output_units = 10,
-                       input_shape = (6,), epochs = 300, batch_size = 32, training_split = 0.8, 
-                       random_state = None):
-        
-        ''' 
-        This algorithm consists of a network with a sequence of Dense layers, which are densely 
-        connected (also called *fully connected*) neural layers. This is the simplest of deep 
-        learning.
-        
-        Parameters:
-    
-            hidden_layers: Number of hidden layers to be used. 3 is the default.
-    
-            hidden_units: Number of units to be used. This is related to 'neurons' in each hidden 
-                          layers.
-                          
-            output_units: Number of clases to be obtained.
-            
-            input_shape: The input shape is generally the shape of the input data provided to the 
-                         Keras model while training. The model cannot know the shape of the 
-                         training data. The shape of other tensors(layers) is computed automatically.
-            
-            epochs: Number of iterations, the network will compute the gradients of the weights with
-                    regard to the loss on the batch, and update the weights accordingly.
-            
-            batch_size: This break the data into small batches. In deep learning, models do not 
-                        process antire dataset at once.
-            
-            training_split: For splitting samples into two subsets, i.e. training data and for testing
-                            data.
-            
-            random_state: Random state ensures that the splits that you generate are reproducible. 
-                          Please, see for more details https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
-            
-        Return:
-        
-            A dictionary with Labels of classification as numpy object, overall accuracy, 
-            among others results.
-        '''
-        
-        # removing the class column
-        X = self.endm.drop(self.endm.columns[[self.indx]], axis = 1)
-        
-        # only predictor variables
-        y = self.endm.iloc[:, self.indx]
-        
-        # split in training and testing
-        Xtrain, Xtest, ytrain, ytest = train_test_split(
-            X, 
-            y, 
-            train_size = training_split, 
-            test_size = 1 - training_split, 
-            random_state = random_state)
-        
-        ytrain_catego = to_categorical(ytrain)
-        ytest_catego = to_categorical(ytest)
-        
-        fcl = [layers.Dense(hidden_units[0], activation = 'relu', input_shape = input_shape)]
-        
-        for i in np.arange(1, hidden_layers):
-            
-            fcl.append(layers.Dense(hidden_units[i], activation = 'relu'))
-        
-        fcl.append(layers.Dense(output_units, activation = 'softmax'))
-        
-        model = models.Sequential(fcl)
-        
-        model.compile(optimizer = 'Adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
-        
-        # model trained
-        model.fit(Xtrain, ytrain_catego, epochs = epochs, batch_size = batch_size, verbose = 0)
-        
-        labels_fullyconnected = model.predict(self.arr)
-        
-        labels = [np.argmax(element) for element in labels_fullyconnected]
-        
-        labels = np.array(labels)
-        
-        # dealing with nan
-        if self.key_nan:
-            # image border like nan
-            labels = labels[self.posIndx]
-            self.class_final[self.posIndx] = labels
-            class_fullyconnected = self.class_final.reshape((self.rows, self.cols))
-        else:
-            class_fullyconnected = labels.reshape((self.rows, self.cols))
-  
-        # Confusion matrix
-        predict_prob = model.predict(Xtest)
-        
-        predict_Xtest = [np.argmax(element) for element in predict_prob]
-        
-        predict_Xtest = np.array(predict_Xtest)
-        
-        MC = confusion_matrix(ytest, predict_Xtest)
-    
-        MC = np.transpose(MC)
+            for i in range(prediction.shape[2]):
+                dst.write(prediction[:, :, i].astype(np.float32), i + 1)
 
-        # Users Accuracy and Commission
-        total_rows = np.sum(MC, axis = 1)
-        ua = np.diag(MC)/np.sum(MC, axis = 1)*100
-        co = 100 - ua
-
-        # Producer Accuracy and Comission
-        total_cols = np.sum(MC, axis = 0)
-        pa = np.diag(MC)/np.sum(MC, axis = 0)*100
-        om = 100 - pa
-
-        total_cols = np.concatenate([total_cols, np.repeat(np.nan, 3)])
-        pa = np.concatenate([pa, np.repeat(np.nan, 3)])
-        om = np.concatenate([om, np.repeat(np.nan, 3)])
-
-        n = MC.shape[0]
-        cm = np.concatenate([MC, total_rows.reshape((n,1)), ua.reshape((n,1)), 
-                             co.reshape((n,1))], axis = 1)
-        cm = np.concatenate([cm, total_cols.reshape((1,n+3)), pa.reshape((1,n+3)), 
-                             om.reshape((1,n+3))])
-
-        namesCol = []
-        for i in np.arange(0, n):
-            stri = str(i)
-            namesCol.append(stri)
-
-        namesCol.extend(['Total', 'Users_Accuracy', 'Commission'])
-
-        namesRow = []
-        for i in np.arange(0, n):
-            stri = str(i)
-            namesRow.append(stri)
-
-        namesRow.extend(['Total', 'Producer_Accuracy', 'Omission'])
-        namesRow
-
-        confusionMatrix = pd.DataFrame(cm, 
-                                        columns = namesCol, 
-                                        index = namesRow)
-
-        oa = accuracy_score(ytest, predict_Xtest)
-        kappa = cohen_kappa_score(ytest, predict_Xtest)
-        
-        output = {'Overall_Accuracy': oa,
-                  'Kappa_Index': kappa,
-                  'Confusion_Matrix': confusionMatrix,
-                  'Classification_Map': class_fullyconnected,
-                  'Image': self.image
-                 } 
-    
-        return output
-    
 # -
 
 
