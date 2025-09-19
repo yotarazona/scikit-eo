@@ -4,6 +4,11 @@ import rasterio
 from rasterio.windows import Window
 import os
 
+import numpy as np
+import rasterio
+from rasterio.windows import Window
+import os
+
 def process_raster_patches(raster_path, label_path=None, patch_size=256, 
                           normalize=False, export_patches=False, output_dir=None,
                           padding_mode='constant', padding_value=0):
@@ -97,9 +102,9 @@ def process_raster_patches(raster_path, label_path=None, patch_size=256,
             X_patches = (X_patches - min_val) / (max_val - min_val)
     
     if label_path is not None:
-        return X_patches, y_patches, (height, width)  # Devolver también dimensiones originales
+        return X_patches, y_patches  # Solo devuelve 2 valores ahora
     else:
-        return X_patches, (height, width)
+        return X_patches  # Solo devuelve 1 valor
 
 def _export_patch(patch, patch_idx, output_dir, profile, patch_size):
     """Exporta un parche como archivo TIFF (función interna)"""
@@ -117,8 +122,11 @@ def _export_patch(patch, patch_idx, output_dir, profile, patch_size):
         )
     })
     
+    # Crear directorio si no existe
+    os.makedirs(output_dir, exist_ok=True)
+    
     # Guardar parche
-    output_path = os.path.join(output_dir, f'patch_{patch_idx}.tif')
+    output_path = os.path.join(output_dir, f'patch_{patch_idx:04d}.tif')
     with rasterio.open(output_path, 'w', **patch_profile) as dst:
         dst.write(patch_export.astype(patch_profile['dtype']))
 
