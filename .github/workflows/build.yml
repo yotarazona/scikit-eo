@@ -25,9 +25,9 @@ jobs:
             SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
         steps:
             - name: CHECKOUT CODE
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
             - name: SETUP PYTHON
-              uses: actions/setup-python@v1
+              uses: actions/setup-python@v4
               with:
                   python-version: ${{ matrix.config.py }}
             - name: Install dependencies
