@@ -29,6 +29,3 @@ jobs:
 
       - name: run tests
         run: pytest
-
-        run: |
-          tox -e py
