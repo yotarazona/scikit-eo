@@ -19,7 +19,6 @@ from scikeo.mla import MLA
 from scikeo.process import extract
 from dbfread import DBF
 from scikeo.calmla import calmla
-from scikeo.deeplearning import DL
 from scikeo.calkmeans import calkmeans
 
 
@@ -149,8 +148,8 @@ def test_DeepLearning():
     path_endm = "tests/data/endmembers.dbf"
     endm = DBF(path_endm)
     endm = pd.DataFrame(endm)
-    # Instance of DL():
-    inst = DL(image = img, endmembers = endm)
+    # Instance of MLA():
+    inst = MLA(image = img, endmembers = endm)
     # Applying the FullyConnected() function of Deep Learning:
     fc = inst.FullyConnected(hidden_layers = 4, 
                          hidden_units = [64,16,8,8], 
