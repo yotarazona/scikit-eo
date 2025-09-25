@@ -272,7 +272,7 @@ def make_mean_iou_metric(num_classes):
 # ==============================
 # UNET TRAINING (binary and multiclass)
 # ==============================
-def train_unet(X_train, y_train, input_shape, num_classes,
+def trainUnet(X_train, y_train, input_shape, num_classes,
                dropout_rate=0.2, learning_rate=1e-4, batch_size=16,
                epochs=50, validation_data=None, validation_split=0.0,
                data_augmentation=False, normalize=True,
@@ -506,7 +506,7 @@ def train_unet(X_train, y_train, input_shape, num_classes,
 # ==========================================
 # PREDICTION FUNCTIONS
 # ==========================================
-def predict_raster(model, raster_path, patch_size=256, num_classes=1,
+def predictRaster(model, raster_path, patch_size=256, num_classes=1,
                    output_path=None, fill_nulls=True, null_value=0, normalize=True,
                    overlap=0):
     """
@@ -643,42 +643,6 @@ def save_prediction_raster(prediction, output_path, original_profile, original_t
 
     with rasterio.open(output_path, 'w', **prediction_profile) as dst:
         dst.write(prediction.astype(rasterio.uint8), 1)
-
-
-def plot_prediction(prediction, title="Prediction", cmap="viridis"):
-    """Plots prediction raster."""
-    plt.figure(figsize=(10, 8))
-    if prediction.ndim > 2:
-        prediction = prediction.squeeze()
-    im = plt.imshow(prediction, cmap=cmap)
-    plt.title(title, fontsize=14)
-    plt.axis('off')
-    plt.colorbar(im, fraction=0.046, pad=0.04)
-    plt.tight_layout()
-    plt.show()
-
-
-def plot_comparison(prediction, reference, title="Prediction vs Reference"):
-    """Plots side-by-side prediction vs reference raster."""
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
-    if prediction.ndim > 2:
-        prediction = prediction.squeeze()
-    if reference.ndim > 2:
-        reference = reference.squeeze()
-
-    im1 = ax1.imshow(prediction, cmap="viridis")
-    ax1.set_title("Prediction", fontsize=12)
-    ax1.axis('off')
-    plt.colorbar(im1, ax=ax1, fraction=0.046, pad=0.04)
-
-    im2 = ax2.imshow(reference, cmap="viridis")
-    ax2.set_title("Reference", fontsize=12)
-    ax2.axis('off')
-    plt.colorbar(im2, ax=ax2, fraction=0.046, pad=0.04)
-
-    plt.suptitle(title, fontsize=14)
-    plt.tight_layout()
-    plt.show()
 
 # -
 
