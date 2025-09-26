@@ -21,7 +21,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 # ==========================================
 # PROCESSING FUNCTIONS
 # ==========================================
-def processing(raster_path, label_path, patch_size=256,
+def processing(raster_path, label_path = None, patch_size=256,
                export_patches=False, output_dir=None,
                export_labels=False, labels_output_dir=None,
                padding_mode='constant', padding_value=0,
