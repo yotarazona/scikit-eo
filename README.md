@@ -22,6 +22,14 @@ Tarazona, Y., Benitez-Paez, F., Nowosad, J., Drenkhan, F., Nowosad, J., and Tima
 
 <!-- #region -->
 
+### 🚀 New in scikit-eo
+
+- Implementation of **Deep Learning models** (U-Net) for satellite image segmentation.  
+- Tools for training, validating, and predicting burned areas and other land cover features.  
+- Example Jupyter Notebooks for **hands-on tutorials**:  
+  - [17_Deep_Learning_Burned_Area_Segmentation_Using_Radar]([link-to-notebook-1](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/17_Deep_Learning_Burned_area_Segmentation_UsingRadar.ipynb))  
+  - [18_Deep_Learning_Burned_Area_Segmentation_Using_Sentinel-2]([link-to-notebook-2](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/18_Deep_Learning_Burned_area_Segmentation_UsingOptical.ipynb))  
+
 # Introduction
 
 Nowadays, remotely sensed data has increased dramatically. Microwaves and optical images with different spatial and temporal resolutions are available and are used to monitor a variety of environmental issues such as deforestation, land degradation, land use and land cover change, among others. Although there are efforts (i.e., Python packages, forums, communities, etc.) to make available line-of-code tools for pre-processing, processing and analysis of satellite imagery, there is still a gap that needs to be filled. In other words, too much time is still spent by many users developing Python lines of code. Algorithms for mapping land degradation through a linear trend of vegetation indices, fusion optical and radar images to classify vegetation cover, and calibration of machine learning algorithms, among others, are not available yet.
