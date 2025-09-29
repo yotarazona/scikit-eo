@@ -10,63 +10,49 @@
 
 ---
 
-<a href="..\scikeo\calkmeans.py#L7"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\calkmeans.py#L8"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `calkmeans`
 
 ```python
 calkmeans(
-    image,
-    k=None,
-    algo=('auto', 'elkan'),
-    max_iter=300,
-    n_iter=10,
-    nodata=-99999,
+    image: DatasetReader,
+    k: Optional[int] = None,
+    algo: Tuple[str, ] = ('lloyd', 'elkan'),
+    max_iter: int = 300,
+    n_iter: int = 10,
+    nodata: float = -99999.0,
     **kwargs
-)
+) → Dict[str, List[float]]
 ```
 
-Calibrating kmeans 
+Calibrating KMeans Clustering Algorithm 
 
-This function allows to calibrate the kmeans algorithm. It is possible to obtain the best 'k' value and the best embedded algorithm in KMmeans.  
+This function calibrates the KMeans algorithm for satellite image classification. It can either find the optimal number of clusters (k) by evaluating the inertia over a range of cluster numbers or determine the best algorithm ('lloyd' or 'elkan') for a given k. 
 
 
 
 **Parameters:**
  
- - <b>`image`</b>:  Optical images. It must be rasterio.io.DatasetReader with 3d.  
-
-
- - <b>`k`</b>:  k This argument is None when the objective is to obtain the best 'k' value.   f the objective is to select the best algorithm embedded in kmeans, please specify a 'k' value. 
-
-
- - <b>`max_iter`</b>:  The maximum number of iterations allowed. Strictly related to KMeans. Please see 
- - <b>`https`</b>: //scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html 
-
-
- - <b>`algo`</b>:  It can be "auto" and 'elkan'. "auto" and "full" are deprecated and they will be   removed in Scikit-Learn 1.3. They are both aliases for "lloyd".  
-
-
- - <b>`Changed in version 1.1`</b>:  Renamed “full” to “lloyd”, and deprecated “auto” and “full”.   Changed “auto” to use “lloyd” instead of “elkan”.  
-
-
- - <b>`n_iter`</b>:  Iterations number to obtain the best 'k' value. 'n_iter' must be greater than the   number of classes expected to be obtained in the classification. Default is 10.  
-
-
- - <b>`nodata`</b>:  The NoData value to replace with -99999.   
-
-
- - <b>`**kwargs`</b>:  These will be passed to scikit-learn KMeans, please see full lists at: 
- - <b>`https`</b>: //scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html. 
-
-Return: Labels of classification as numpy object with 2d. 
+ - <b>`image`</b> (rasterio.io.DatasetReader):  Optical image with 3D data. 
+ - <b>`k`</b> (Optional[int]):  The number of clusters. If None, the function finds the optimal k. 
+ - <b>`algo`</b> (Tuple[str, ...]):  Algorithms to evaluate ('lloyd', 'elkan'). 
+ - <b>`max_iter`</b> (int):  Maximum iterations for KMeans (default 300). 
+ - <b>`n_iter`</b> (int):  Number of iterations or clusters to evaluate (default 10). 
+ - <b>`nodata`</b> (float):  The NoData value to identify and handle in the data. 
+ - <b>`**kwargs`</b>:  Additional arguments passed to sklearn.cluster.KMeans. 
 
 
 
-**Note:**
+**Returns:**
+ 
+ - <b>`Dict[str, List[float]]`</b>:  A dictionary with algorithm names as keys and lists of  inertia values as values. 
 
-> If the idea is to find the optimal value of 'k' (clusters or classes), k = None as an argument of the function must be put, because the function find 'k' for which the intra-class inertia is stabilized. If the 'k' value is known and the idea is to find the best algorithm embedded in kmeans (that maximizes inter-class distances), k = n, which 'n' is a specific class number, must be put. It can be greater than or equal to 0. 
->
+
+
+**Notes:**
+
+> - If k is None, the function evaluates inertia for cluster numbers from 1 to n_iter. - If k is provided, the function runs KMeans n_iter times for each algorithm to evaluate their performance. - The function handles NoData values using fuzzy matching to account for floating-point precision. 
 
 
 
