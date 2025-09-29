@@ -35,6 +35,10 @@ Remote sensing tools of **scikit-eo** can be mainly grouped into 3 sets.
 
 11 [Deep Learning Classification FullyConnected.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/11_Deep_Learning_Classification_FullyConnected.ipynb)
 
+17 [Deep_Learning_Burned_area_Segmentation_UsingRadar.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/17_Deep_Learning_Burned_area_Segmentation_UsingRadar.ipynb)
+
+18 [Deep_Learning_Burned_area_Segmentation_UsingOptical.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/18_Deep_Learning_Burned_area_Segmentation_UsingOptical.ipynb)
+
 ### Tools for satellite image preprocessing
 
 12 [Atmospheric Correction.ipynb](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/12_Atmospheric_Correction.ipynb)
