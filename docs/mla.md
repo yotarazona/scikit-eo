@@ -11,12 +11,12 @@
 
 ---
 
-<a href="..\scikeo\mla.py#L19"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\mla.py#L23"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>class</kbd> `MLA`
 Supervised classification in Remote Sensing 
 
-<a href="..\scikeo\mla.py#L23"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\mla.py#L27"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `__init__`
 
@@ -39,7 +39,7 @@ Parameter:
 
 ---
 
-<a href="..\scikeo\mla.py#L238"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\mla.py#L242"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `DT`
 
@@ -71,7 +71,62 @@ A dictionary containing labels of classification as numpy object, overall accura
 
 ---
 
-<a href="..\scikeo\mla.py#L467"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\mla.py#L701"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+
+### <kbd>method</kbd> `FullyConnected`
+
+```python
+FullyConnected(
+    hidden_layers=3,
+    hidden_units=[64, 32, 16],
+    output_units=10,
+    input_shape=(6,),
+    epochs=300,
+    batch_size=32,
+    training_split=0.8,
+    random_state=None
+)
+```
+
+This algorithm consists of a network with a sequence of Dense layers, which are densely  connected (also called *fully connected*) neural layers. This is the simplest of deep  learning. 
+
+
+
+**Parameters:**
+ 
+
+
+ - <b>`hidden_layers`</b>:  Number of hidden layers to be used. 3 is the default. 
+
+
+ - <b>`hidden_units`</b>:  Number of units to be used. This is related to 'neurons' in each hidden   layers.  
+
+
+ - <b>`output_units`</b>:  Number of clases to be obtained. 
+
+
+ - <b>`input_shape`</b>:  The input shape is generally the shape of the input data provided to the   Keras model while training. The model cannot know the shape of the   training data. The shape of other tensors(layers) is computed automatically. 
+
+
+ - <b>`epochs`</b>:  Number of iterations, the network will compute the gradients of the weights with  regard to the loss on the batch, and update the weights accordingly. 
+
+
+ - <b>`batch_size`</b>:  This break the data into small batches. In deep learning, models do not   process antire dataset at once. 
+
+
+ - <b>`training_split`</b>:  For splitting samples into two subsets, i.e. training data and for testing  data. 
+
+
+ - <b>`random_state`</b>:  Random state ensures that the splits that you generate are reproducible.  
+ - <b>`Please, see for more details https`</b>: //scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html 
+
+Return: 
+
+A dictionary with Labels of classification as numpy object, overall accuracy,  among others results. 
+
+---
+
+<a href="..\scikeo\mla.py#L471"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `NB`
 
@@ -103,7 +158,7 @@ A dictionary containing labels of classification as numpy object, overall accura
 
 ---
 
-<a href="..\scikeo\mla.py#L582"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\mla.py#L586"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `NN`
 
@@ -135,7 +190,7 @@ A dictionary containing labels of classification as numpy object, overall accura
 
 ---
 
-<a href="..\scikeo\mla.py#L353"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\mla.py#L357"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `RF`
 
@@ -167,7 +222,7 @@ A dictionary containing labels of classification as numpy object, overall accura
 
 ---
 
-<a href="..\scikeo\mla.py#L117"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\mla.py#L121"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>method</kbd> `SVM`
 
