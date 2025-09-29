@@ -27,8 +27,8 @@ Tarazona, Y., Benitez-Paez, F., Nowosad, J., Drenkhan, F., Nowosad, J., and Tima
 - Implementation of **Deep Learning models** (U-Net) for satellite image segmentation.  
 - Tools for training, validating, and predicting burned areas and other land cover features.  
 - Example Jupyter Notebooks for **hands-on tutorials**:  
-  - [17_Deep_Learning_Burned_Area_Segmentation_Using_Radar]([link-to-notebook-1](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/17_Deep_Learning_Burned_area_Segmentation_UsingRadar.ipynb))  
-  - [18_Deep_Learning_Burned_Area_Segmentation_Using_Sentinel-2]([link-to-notebook-2](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/18_Deep_Learning_Burned_area_Segmentation_UsingOptical.ipynb))  
+  - [17_Deep_Learning_Burned_Area_Segmentation_Using_Radar](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/17_Deep_Learning_Burned_area_Segmentation_UsingRadar.ipynb)  
+  - [18_Deep_Learning_Burned_Area_Segmentation_Using_Sentinel-2](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/18_Deep_Learning_Burned_area_Segmentation_UsingOptical.ipynb)  
 
 # Introduction
 
