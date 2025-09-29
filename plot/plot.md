@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/plot.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\plot.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # <kbd>module</kbd> `plot`
 
@@ -10,7 +10,7 @@
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/plot.py#L7"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\plot.py#L7"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `plotHist`
 
@@ -74,14 +74,14 @@ Return:
 
 ---
 
-<a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/plot.py#L90"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="..\scikeo\plot.py#L90"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `plotRGB`
 
 ```python
 plotRGB(
     image,
-    bands=[3, 2, 1],
+    bands=[5, 4, 3],
     stretch='std',
     title=None,
     xlabel=None,
@@ -91,7 +91,7 @@ plotRGB(
 )
 ```
 
-Plotting an image in RGB. 
+Plotting a satellite image in RGB. 
 
 This function allows to plot an satellite image in RGB channels.  
 
@@ -101,7 +101,7 @@ This function allows to plot an satellite image in RGB channels.
   
 
 
- - <b>`image`</b>:  Optical images. It must be rasterio.io.DatasetReader with 3d.  
+ - <b>`image`</b>:  Satellite image. It must be np.ndarray with bands, rows and cols or must be rasterio.io.DatasetReader with 3d.  
 
 
  - <b>`bands`</b>:  A list contain the order of bands to be used in order to plot in RGB. For example,  for six bands (blue, green, red, nir, swir1 and swir2), number four (4) indicates   the swir1 band, number three (3) indicates the nir band and the number two (2) indicates  the red band.  

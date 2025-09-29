@@ -48,7 +48,7 @@ import matplotlib as mpl
 import pandas as pd
 ```
 #### 03. Image and endmembers
-We will upload a satellite image as a *.tif* and endmembers as a *.dbf*. It is possible extract endmembers values using the ```extract()``` function. In this case, opload only a shapefile (point feature) of samples without extracted spectral values. Please see [tutorials](https://yotarazona.github.io/scikit-eo/tutorials/) section for more details.
+We will upload a satellite image as a *.tif* and endmembers as a *.dbf*. It is possible to extract endmembers values using the ```extract()``` function. In this case, upload only a shapefile (point feature) of samples without extracted spectral values. Please see [tutorials](https://yotarazona.github.io/scikit-eo/tutorials/) section for more details.
 
 ```python
 path_raster = r"/home/data/LC08_232066_20190727_SR.tif"
@@ -154,7 +154,7 @@ data = inst.splitData()
 
 **Parameters**:
 
-- ```split_data```: An instance obtaind with ```splitData()```.
+- ```split_data```: An instance obtained with ```splitData()```.
 - ```models```: Support Vector Machine (svm), Decision Tree (dt), Random Forest (rf) and Naive Bayes (nb).
 - ```n_iter```: Number of iterations.
 
@@ -186,9 +186,9 @@ In ```scikit-eo``` we developed the ```fusionrs()``` function which provides us 
 - *Contributions_in_%*: The contributions of each optical and radar band in the fusion.
 
 
-#### 01. Loagind dataset
+#### 01. Loading dataset
 
-Loading a radar and optical imagery with a total of 9 bands. Optical imagery has 6 bands Blue, Green, Red, NIR, SWIR1 and SWIR2, while radar imagery has 3 bandas VV, VH and VV/VH.
+Loading a radar and optical imagery with a total of 9 bands. Optical imagery has 6 bands Blue, Green, Red, NIR, SWIR1 and SWIR2, while radar imagery has 3 bands VV, VH and VV/VH.
 
 ```python
 path_optical = "/home/data/ex_03/LC08_003069_20180906.tif"
@@ -257,7 +257,7 @@ fusion.get('Contributions_in_%')
 
 ![Contributions of each variable in %.](images/scikit_eo_03.png){ width=90% }
 
-Here, *var1*, *var2*, ... *var12* refer to *Blue*, *Green*, ... *VV/VH* bands respectively. It can be observed that *var2* (Green) has a higher contribution percentage 16.9% than other variables. With respect to radar polarizaciones, we can note that *var8* (VH polarization) has a higher contribution 11.8% than other radar bands.
+Here, *var1*, *var2*, ... *var12* refer to *Blue*, *Green*, ... *VV/VH* bands respectively. It can be observed that *var2* (Green) has a higher contribution percentage 16.9% than other variables. With respect to radar polarizations, we can note that *var8* (VH polarization) has a higher contribution 11.8% than other radar bands.
 
 
 #### 08. Preparing the image:

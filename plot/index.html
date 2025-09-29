@@ -871,10 +871,10 @@
 
 <!-- markdownlint-disable -->
 
-<p><a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/plot.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
+<p><a href="..\scikeo\plot.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
 <h1 id="module-plot"><kbd>module</kbd> <code>plot</code><a class="headerlink" href="#module-plot" title="Permanent link">&para;</a></h1>
 <hr />
-<p><a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/plot.py#L7"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
+<p><a href="..\scikeo\plot.py#L7"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
 <h2 id="function-plothist"><kbd>function</kbd> <code>plotHist</code><a class="headerlink" href="#function-plothist" title="Permanent link">&para;</a></h2>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -940,7 +940,7 @@
 <p>Return: 
  - <b><code>ax</code></b>:  A histogram of an image. </p>
 <hr />
-<p><a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/plot.py#L90"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
+<p><a href="..\scikeo\plot.py#L90"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
 <h2 id="function-plotrgb"><kbd>function</kbd> <code>plotRGB</code><a class="headerlink" href="#function-plotrgb" title="Permanent link">&para;</a></h2>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -953,7 +953,7 @@
 <span class="normal"> 9</span>
 <span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">plotRGB</span><span class="p">(</span>
     <span class="n">image</span><span class="p">,</span>
-    <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
     <span class="n">stretch</span><span class="o">=</span><span class="s1">&#39;std&#39;</span><span class="p">,</span>
     <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -962,12 +962,12 @@
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-<p>Plotting an image in RGB. </p>
+<p>Plotting a satellite image in RGB. </p>
 <p>This function allows to plot an satellite image in RGB channels.  </p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li>
-<p><b><code>image</code></b>:  Optical images. It must be rasterio.io.DatasetReader with 3d.  </p>
+<p><b><code>image</code></b>:  Satellite image. It must be np.ndarray with bands, rows and cols or must be rasterio.io.DatasetReader with 3d.  </p>
 </li>
 <li>
 <p><b><code>bands</code></b>:  A list contain the order of bands to be used in order to plot in RGB. For example,  for six bands (blue, green, red, nir, swir1 and swir2), number four (4) indicates   the swir1 band, number three (3) indicates the nir band and the number two (2) indicates  the red band.  </p>
@@ -1016,7 +1016,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
     </span>
-    2024-06-25
+    2024-09-11
   </span>
 
     

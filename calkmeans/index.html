@@ -853,10 +853,10 @@
 
 <!-- markdownlint-disable -->
 
-<p><a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/calkmeans.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
+<p><a href="..\scikeo\calkmeans.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
 <h1 id="module-calkmeans"><kbd>module</kbd> <code>calkmeans</code><a class="headerlink" href="#module-calkmeans" title="Permanent link">&para;</a></h1>
 <hr />
-<p><a href="https://github.com/yotarazona/scikit-eo/blob/main/scikeo/calkmeans.py#L7"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
+<p><a href="..\scikeo\calkmeans.py#L8"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a></p>
 <h2 id="function-calkmeans"><kbd>function</kbd> <code>calkmeans</code><a class="headerlink" href="#function-calkmeans" title="Permanent link">&para;</a></h2>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -867,53 +867,36 @@
 <span class="normal">7</span>
 <span class="normal">8</span>
 <span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">calkmeans</span><span class="p">(</span>
-    <span class="n">image</span><span class="p">,</span>
-    <span class="n">k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">algo</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="s1">&#39;elkan&#39;</span><span class="p">),</span>
-    <span class="n">max_iter</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
-    <span class="n">n_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-    <span class="n">nodata</span><span class="o">=-</span><span class="mi">99999</span><span class="p">,</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">DatasetReader</span><span class="p">,</span>
+    <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">algo</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;lloyd&#39;</span><span class="p">,</span> <span class="s1">&#39;elkan&#39;</span><span class="p">),</span>
+    <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
+    <span class="n">n_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">nodata</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">99999.0</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
-<span class="p">)</span>
+<span class="p">)</span> <span class="err">→</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span>
 </code></pre></div></td></tr></table></div>
-<p>Calibrating kmeans </p>
-<p>This function allows to calibrate the kmeans algorithm. It is possible to obtain the best 'k' value and the best embedded algorithm in KMmeans.  </p>
+<p>Calibrating KMeans Clustering Algorithm </p>
+<p>This function calibrates the KMeans algorithm for satellite image classification. It can either find the optimal number of clusters (k) by evaluating the inertia over a range of cluster numbers or determine the best algorithm ('lloyd' or 'elkan') for a given k. </p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li>
-<p><b><code>image</code></b>:  Optical images. It must be rasterio.io.DatasetReader with 3d.  </p>
-</li>
-<li>
-<p><b><code>k</code></b>:  k This argument is None when the objective is to obtain the best 'k' value.   f the objective is to select the best algorithm embedded in kmeans, please specify a 'k' value. </p>
-</li>
-<li>
-<p><b><code>max_iter</code></b>:  The maximum number of iterations allowed. Strictly related to KMeans. Please see </p>
-</li>
-<li>
-<p><b><code>https</code></b>: //scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html </p>
-</li>
-<li>
-<p><b><code>algo</code></b>:  It can be "auto" and 'elkan'. "auto" and "full" are deprecated and they will be   removed in Scikit-Learn 1.3. They are both aliases for "lloyd".  </p>
-</li>
-<li>
-<p><b><code>Changed in version 1.1</code></b>:  Renamed “full” to “lloyd”, and deprecated “auto” and “full”.   Changed “auto” to use “lloyd” instead of “elkan”.  </p>
-</li>
-<li>
-<p><b><code>n_iter</code></b>:  Iterations number to obtain the best 'k' value. 'n_iter' must be greater than the   number of classes expected to be obtained in the classification. Default is 10.  </p>
-</li>
-<li>
-<p><b><code>nodata</code></b>:  The NoData value to replace with -99999.   </p>
-</li>
-<li>
-<p><b><code>**kwargs</code></b>:  These will be passed to scikit-learn KMeans, please see full lists at: </p>
-</li>
-<li><b><code>https</code></b>: //scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html. </li>
+<li><b><code>image</code></b> (rasterio.io.DatasetReader):  Optical image with 3D data. </li>
+<li><b><code>k</code></b> (Optional[int]):  The number of clusters. If None, the function finds the optimal k. </li>
+<li><b><code>algo</code></b> (Tuple[str, ...]):  Algorithms to evaluate ('lloyd', 'elkan'). </li>
+<li><b><code>max_iter</code></b> (int):  Maximum iterations for KMeans (default 300). </li>
+<li><b><code>n_iter</code></b> (int):  Number of iterations or clusters to evaluate (default 10). </li>
+<li><b><code>nodata</code></b> (float):  The NoData value to identify and handle in the data. </li>
+<li><b><code>**kwargs</code></b>:  Additional arguments passed to sklearn.cluster.KMeans. </li>
 </ul>
-<p>Return: Labels of classification as numpy object with 2d. </p>
-<p><strong>Note:</strong></p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><b><code>Dict[str, List[float]]</code></b>:  A dictionary with algorithm names as keys and lists of  inertia values as values. </li>
+</ul>
+<p><strong>Notes:</strong></p>
 <blockquote>
-<p>If the idea is to find the optimal value of 'k' (clusters or classes), k = None as an argument of the function must be put, because the function find 'k' for which the intra-class inertia is stabilized. If the 'k' value is known and the idea is to find the best algorithm embedded in kmeans (that maximizes inter-class distances), k = n, which 'n' is a specific class number, must be put. It can be greater than or equal to 0. 
-</p>
+<ul>
+<li>If k is None, the function evaluates inertia for cluster numbers from 1 to n_iter. - If k is provided, the function runs KMeans n_iter times for each algorithm to evaluate their performance. - The function handles NoData values using fuzzy matching to account for floating-point precision. </li>
+</ul>
 </blockquote>
 <hr />
 <p><em>This file was automatically generated via <a href="https://github.com/ml-tooling/lazydocs">lazydocs</a>.</em></p>
@@ -937,7 +920,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
     </span>
-    2024-06-25
+    2025-09-29
   </span>
 
     

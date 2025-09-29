@@ -1,6 +1,5 @@
-# Welcome to
-
-# **scikit-eo: A Python package for Remote Sensing Tools**
+<!-- #region -->
+# scikit-eo: A Python package for Remote Sensing Data Analysis
 
 [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -9,41 +8,21 @@
 [![Youtube](https://img.shields.io/badge/YouTube-Channel-red)]()
 [![Downloads](https://static.pepy.tech/badge/scikeo)](https://pepy.tech/project/scikeo)
 [![Downloads](https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/docs-passing-brightgreen.svg)]()
+[![tests](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml/badge.svg)](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml)
 <a href="https://joss.theoj.org/papers/46bccc5be81d7ea886e05807cfe6790c"><img src="https://joss.theoj.org/papers/46bccc5be81d7ea886e05807cfe6790c/status.svg"></a>
 
-<p align="center">
-  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/scikit-eo_logo.jpg" alt="header" width = '180'></a>
-</p>
 
-# 🌍🛰️🚀 NEW: Deep Learning Segmentation  
 
-- Implementation of **Deep Learning models** (U-Net) for satellite image segmentation.  
-- Tools for training, validating, and predicting burned areas and other land cover features.  
-- Example Jupyter Notebooks for **hands-on tutorials**:  
-  - [17_Deep_Learning_Burned_Area_Segmentation_Using_Radar](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/17_Deep_Learning_Burned_area_Segmentation_UsingRadar.ipynb)  
-  - [18_Deep_Learning_Burned_Area_Segmentation_Using_Sentinel-2](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/18_Deep_Learning_Burned_area_Segmentation_UsingOptical.ipynb)
+<img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/scikit-eo_logo.jpg" align="right" width="220"/>
 
-### Links of interest:
-
-- **GitHub repo**: <https://github.com/yotarazona/scikit-eo>
-- **Documentation**: <https://yotarazona.github.io/scikit-eo/>
-- **PyPI**: <https://pypi.org/project/scikeo/>
-- **Notebooks examples**: <https://github.com/yotarazona/scikit-eo/tree/main/examples>
-- **Google Colab examples**: <https://github.com/yotarazona/scikit-eo/tree/main/examples>
-- **Free software**: [Apache 2.0](https://opensource.org/license/apache-2-0/)
-- **Tutorials: step by step**: <https://yotarazona.github.io/scikit-eo/tutorials/>
-
-# **Introduction**
+<!-- #region -->
+# Introduction
 
 Nowadays, remotely sensed data has increased dramatically. Microwaves and optical images with different spatial and temporal resolutions are available and are used to monitor a variety of environmental issues such as deforestation, land degradation, land use and land cover change, among others. Although there are efforts (i.e., Python packages, forums, communities, etc.) to make available line-of-code tools for pre-processing, processing and analysis of satellite imagery, there is still a gap that needs to be filled. In other words, too much time is still spent by many users developing Python lines of code. Algorithms for mapping land degradation through a linear trend of vegetation indices, fusion optical and radar images to classify vegetation cover, and calibration of machine learning algorithms, among others, are not available yet.
 
-Therefore, **scikit-eo** is a Python package that provides tools for remote sensing. This package was developed to fill the gaps in remotely sensed data processing tools. Most of the tools are based on scientific publications, and others are useful algorithms that will allow processing to be done in a few lines of code. With these tools, the user will be able to invest time in analyzing the results of their data and not spend time on elaborating lines of code, which can sometimes be stressful.
+Therefore, [scikit-eo](https://github.com/yotarazona/scikit-eo) is a Python package that provides tools for remote sensing. This package was developed to fill the gaps in remotely sensed data processing tools. Most of the tools are based on scientific publications, and others are useful algorithms that will allow processing to be done in a few lines of code. With these tools, the user will be able to invest time in analyzing the results of their data and not spend time on elaborating lines of code, which can sometimes be stressful.
 
-# **Audience**
-
-**Scikit-eo** is a versatile Python package designed to cover a wide range of users, including students, professionals of remote sensing, researchers of environmental analysis, and organizations looking for satellite image analysis. Its comprehensive features make it well-suited for various applications, such as university teaching, that include technical and practical sessions, and cutting-edge research using the most recent machine learning and deep learning techniques applied to the field of remote sensing. Whether the user are students seeking to get insights from a satellite image analysis or a experienced researcher looking for advanced tools, scikit-eo offers a valuable resource to support the most valuable methods for environmental studies.
-
-# **Tools for Remote Sensing**
+# Tools for Remote Sensing
 
 | Name of functions/classes  | Description|
 | -------------------| --------------------------------------------------------------------------|
@@ -61,8 +40,6 @@ Therefore, **scikit-eo** is a Python package that provides tools for remote sens
 | **`tassCap`**      | The Tasseled-Cap Transformation                                           |
 
 You will find more algorithms!.
-
-<!-- #region -->
 
 # Dependencies used by **scikit-eo**
 
@@ -105,3 +82,170 @@ conda activate scikiteo
 Then finally, ```scikit-eo``` can be install within this new environment using via PyPI or from the GitHub repository.
 
 <!-- #endregion -->
+
+# Example
+
+## 1.0 Applying Machine Learning
+
+Libraries to be used:
+
+```python
+import rasterio
+import numpy as np
+from scikeo.mla import MLA
+from scikeo.process import extract
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import geopandas as gpd
+from scikeo.plot import plotRGB
+from scikeo.writeRaster import writeRaster
+```
+
+## 2.0 Optical image
+
+Landsat-8 OLI (Operational Land Imager) will be used to obtain in order to classify using Random Forest (RF). This image, which is in surface reflectance with bands:
+- Blue -> B2
+- Green -> B3 
+- Red -> B4
+- Nir -> B5
+- Swir1 -> B6
+- Swir2 -> B7
+
+This image will be downloaded using the following codes:
+
+```python
+import requests, zipfile
+from io import BytesIO
+
+# Defining the zip file URL
+url = 'https://github.com/yotarazona/data/raw/main/data/01_machine_learning.zip'
+
+# Split URL to get the file name
+filename = url.split('/')[-1]
+
+# Downloading the file by sending the request to the URL
+req = requests.get(url)
+
+# extracting the zip file contents
+file = zipfile.ZipFile(BytesIO(req.content))
+file.extractall()
+```
+
+## 3.0 Supervised Classification using Random Forest
+
+Image and endmembers
+
+```python
+data_dir = "01_machine_learning/"
+
+# satellite image
+path_raster = data_dir + "LC08_232066_20190727_SR.tif"
+img = rasterio.open(path_raster)
+
+# endmembers
+path_endm = data_dir + "endmembers.shp"
+endm = gpd.read_file(path_endm)
+```
+
+```python
+# endmembers
+endm = extract(img, endm)
+endm
+```
+<p align="left">
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/endembers.png" alt ="header" width = 75%>
+</a>
+</p>
+
+
+Instance of ```mla()```:
+
+```python
+inst = MLA(image = img, endmembers = endm)
+```
+
+Applying Random Forest:
+
+```python
+svm_class = inst.SVM(training_split = 0.7)
+```
+
+## 4.0 Results
+
+Dictionary of results
+
+```python
+svm_class.keys()
+```
+
+Overall accuracy
+
+```python
+svm_class.get('Overall_Accuracy')
+```
+
+Kappa index
+
+```python
+svm_class.get('Kappa_Index')
+```
+
+Confusion matrix or error matrix
+
+```python
+svm_class.get('Confusion_Matrix')
+```
+
+<p align="left">
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/confusion_matrix.png" alt ="header" width = 80%>
+</a>
+</p>
+
+
+Preparing the image before plotting
+
+```python
+# Let's define the color palette
+palette = mpl.colors.ListedColormap(["#2232F9","#F922AE","#229954","#7CED5E"])
+```
+
+Applying the ```plotRGB()``` algorithm is easy:
+
+```python
+# Let´s plot
+fig, axes = plt.subplots(nrows = 1, ncols = 2, figsize = (15, 9))
+
+# satellite image
+plotRGB(img, title = 'Image in Surface Reflectance', ax = axes[0])
+
+# class results
+axes[1].imshow(svm_class.get('Classification_Map'), cmap = palette)
+axes[1].set_title("Classification map")
+axes[1].grid(False)
+```
+
+<p align="left">
+  <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/classification.png" alt ="header" width = "750">
+</a>
+</p>
+
+This result shows us how we can use the ```scikit-eo``` python package in order to obtaind a Land Cover map. Following this tutorial is it possible to use different algorithms such as Support Vector Machine, Decision Tree, Neural Networks, amont others.
+
+
+-   Free software: Apache Software License 2.0
+-   Documentation: 
+
+## Acknowledgment
+
+Special thanks to:
+- [David Montero Loaiza](https://github.com/davemlz) for the idea of the package name **scikit-eo**.
+
+- [Qiusheng Wu](https://github.com/giswqs) for the suggestions that helped to improve the package.
+
+## Credits
+
+This package was created with [Cookiecutter](https://github.com/cookiecutter/cookiecutter)
+
+## Logo inspiration
+
+The logo on the package is inspired by fog oasis known as "lomas".
