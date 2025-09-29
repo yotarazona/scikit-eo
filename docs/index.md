@@ -9,13 +9,19 @@
 [![Youtube](https://img.shields.io/badge/YouTube-Channel-red)]()
 [![Downloads](https://static.pepy.tech/badge/scikeo)](https://pepy.tech/project/scikeo)
 [![Downloads](https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/docs-passing-brightgreen.svg)]()
-[![tests](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml/badge.svg)](https://github.com/yotarazona/scikit-eo/actions/workflows/tests.yml)
 <a href="https://joss.theoj.org/papers/46bccc5be81d7ea886e05807cfe6790c"><img src="https://joss.theoj.org/papers/46bccc5be81d7ea886e05807cfe6790c/status.svg"></a>
 
 <p align="center">
   <a href="https://github.com/yotarazona/scikit-eo"><img src="https://raw.githubusercontent.com/yotarazona/scikit-eo/main/docs/images/scikit-eo_logo.jpg" alt="header" width = '180'></a>
 </p>
 
+# 🌍🛰️🚀 NEW: Deep Learning Segmentation  
+
+- Implementation of **Deep Learning models** (U-Net) for satellite image segmentation.  
+- Tools for training, validating, and predicting burned areas and other land cover features.  
+- Example Jupyter Notebooks for **hands-on tutorials**:  
+  - [17_Deep_Learning_Burned_Area_Segmentation_Using_Radar](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/17_Deep_Learning_Burned_area_Segmentation_UsingRadar.ipynb)  
+  - [18_Deep_Learning_Burned_Area_Segmentation_Using_Sentinel-2](https://github.com/yotarazona/scikit-eo/blob/main/examples/notebooks/18_Deep_Learning_Burned_area_Segmentation_UsingOptical.ipynb)
 
 ### Links of interest:
 
