@@ -22,7 +22,7 @@ Tarazona, Y., Benitez-Paez, F., Nowosad, J., Drenkhan, F., Nowosad, J., and Tima
 
 <!-- #region -->
 
-# 🌍🛰️🚀 NEW IN SCiKIT-EO: Deep Learning Segmentation  
+# 🌍🛰️🚀 NEW: Deep Learning Segmentation  
 
 - Implementation of **Deep Learning models** (U-Net) for satellite image segmentation.  
 - Tools for training, validating, and predicting burned areas and other land cover features.  
