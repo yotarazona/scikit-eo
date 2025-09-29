@@ -22,7 +22,7 @@ Tarazona, Y., Benitez-Paez, F., Nowosad, J., Drenkhan, F., Nowosad, J., and Tima
 
 <!-- #region -->
 
-### 🚀 New in scikit-eo
+# 🚀 New in scikit-eo
 
 - Implementation of **Deep Learning models** (U-Net) for satellite image segmentation.  
 - Tools for training, validating, and predicting burned areas and other land cover features.  
