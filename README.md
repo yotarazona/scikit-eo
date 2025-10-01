@@ -43,14 +43,14 @@ Therefore, [scikit-eo](https://github.com/yotarazona/scikit-eo) is a Python pack
 | **`mla`**          | Machine Learning (Random Forest, Support Vector Machine, Decition Tree, Naive Bayes, Neural Network, etc.)                                                          |
 | **`calmla`**       | Calibrating supervised classification in Remote Sensing (e.g., Monte Carlo Cross-Validation, Leave-One-Out Cross-Validation, etc.)                   |
 | **`confintervalML`**       | Information of confusion matrix by proportions of area, overall accuracy, user's accuracy with confidence interval and estimated area with confidence interval as well.                                    |
-| **`rkmeans`**      | K-means classification                                                    |
+| **`rkmeans`**      | K-means classification.                                                    |
 | **`calkmeans`**    | This function allows to calibrate the kmeans algorithm. It is possible to obtain the best k value and the best embedded algorithm in kmeans.                               |
-| **`pca`**          | Principal Components Analysis                                             |
-| **`atmosCorr`**    | Atmospheric Correction of satellite imagery                               |
-| **`deepLearning`** | Deep Learning algorithms                                                  |
-| **`linearTrend`**  | Linear trend is useful for mapping forest degradation or land degradation |
-| **`fusionrs`**     | This algorithm allows to fuse images coming from different spectral sensors (e.g., optical-optical, optical and SAR or SAR-SAR). Among many of the qualities of this function, it is possible to obtain the contribution (%) of each variable in the fused image |
-| **`sma`**          | Spectral Mixture Analysis - Classification sup-pixel                      |
+| **`pca`**          | Principal Components Analysis.                                             |
+| **`atmosCorr`**    | Atmospheric Correction of satellite imagery.                               |
+| **`deepLearning`** | Deep Learning algorithms.                                                  |
+| **`linearTrend`**  | Linear trend is useful for mapping forest degradation or land degradation. |
+| **`fusionrs`**     | This algorithm allows to fuse images coming from different spectral sensors (e.g., optical-optical, optical and SAR or SAR-SAR). Among many of the qualities of this function, it is possible to obtain the contribution (%) of each variable in the fused image. |
+| **`sma`**          | Spectral Mixture Analysis - Classification sup-pixel.                      |
 | **`tassCap`**      | The Tasseled-Cap Transformation.                                         |
 
 You will find more algorithms!.
