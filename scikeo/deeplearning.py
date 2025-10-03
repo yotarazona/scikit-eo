@@ -11,6 +11,7 @@ import rasterio
 from rasterio.windows import Window
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, jaccard_score
 import tensorflow as tf
 from tensorflow.keras.models import Model
