@@ -770,6 +770,9 @@ def evaluateSegmentation(y_true_array, y_pred_array, num_classes, classes=None, 
     y_true = y_true_array.ravel()
     y_pred = y_pred_array.ravel()
 
+    y_true[np.isnan(y_true)] = 0
+    y_pred[np.isnan(y_pred)] = 0
+    
     # -------- Metrics --------
     acc = accuracy_score(y_true, y_pred)
     prec = precision_score(y_true, y_pred, average='weighted', zero_division=0)
