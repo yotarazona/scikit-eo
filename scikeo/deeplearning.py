@@ -6,10 +6,12 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import rasterio
 from rasterio.windows import Window
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, jaccard_score
 import tensorflow as tf
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import (Input, Conv2D, MaxPooling2D, Dropout,Conv2DTranspose, concatenate)
@@ -643,6 +645,174 @@ def save_prediction_raster(prediction, output_path, original_profile, original_t
 
     with rasterio.open(output_path, 'w', **prediction_profile) as dst:
         dst.write(prediction.astype(rasterio.uint8), 1)
+
+
+# ==========================================
+# EVALUATION FUNCTIONS
+# ==========================================
+
+def plotConfusionMatrix(y_true, y_pred, text_size=12, classes=None, ax=None, cmap=plt.cm.Blues):
+    """
+    Plot a confusion matrix for classification results.
+
+    Parameters
+    ----------
+    y_true : array-like of shape (n_samples,)
+        Ground-truth (correct) target labels.
+    
+    y_pred : array-like of shape (n_samples,)
+        Estimated target labels predicted by the model.
+    
+    text_size : int, default=12
+        Font size for axis labels and text inside cells.
+    
+    classes : list of str, optional
+        List of class names to display on the axes. If None, integer class labels are used.
+    
+    ax : matplotlib.axes.Axes, optional
+        Existing matplotlib axis to plot on. If None, creates a new one with `plt.gca()`.
+    
+    cmap : matplotlib colormap, default=plt.cm.Blues
+        Colormap used to display the confusion matrix.
+    
+    Returns
+    -------
+    ax : matplotlib.axes.Axes
+        The matplotlib axis with the confusion matrix plot.
+    
+    Notes
+    -----
+    - Values are displayed in each cell.
+    - Colors are scaled between the min and max of the confusion matrix.
+    - Useful for visualizing classification results in binary or multiclass problems.
+
+    Examples
+    --------
+    >>> from sklearn.metrics import confusion_matrix
+    >>> y_true = [0, 1, 2, 2, 0]
+    >>> y_pred = [0, 0, 2, 2, 1]
+    >>> plotConfusionMatrix(y_true, y_pred, classes=['Class A','Class B','Class C'])
+    """
+    if ax is None:
+        ax = plt.gca()  # get current axes
+
+    # Compute confusion matrix
+    cm = confusion_matrix(y_true, y_pred)
+    threshold = (cm.max() + cm.min()) / 2
+
+    # Number of classes
+    n_classes = cm.shape[0]
+
+    # Draw the matrix plot
+    im = ax.matshow(cm, cmap=cmap)
+    plt.colorbar(im, ax=ax)
+
+    # Labels
+    labels = classes if classes is not None else np.arange(n_classes)
+
+    # Axis setup
+    ax.set(
+        title="Confusion Matrix",
+        xlabel="Ground-truth",
+        ylabel="Predicted label",
+        xticks=np.arange(n_classes),
+        yticks=np.arange(n_classes),
+        xticklabels=labels,
+        yticklabels=labels
+    )
+    ax.xaxis.set_label_position('bottom')
+    ax.xaxis.tick_bottom()
+
+    # Font sizes
+    ax.yaxis.label.set_size(text_size)
+    ax.xaxis.label.set_size(text_size)
+    ax.title.set_size(text_size)
+    ax.grid(False)
+
+    # Annotate each cell
+    for i in range(n_classes):
+        for j in range(n_classes):
+            ax.text(j, i, f'{cm[i,j]}',
+                    ha='center', va='center',
+                    color='white' if cm[i,j] > threshold else 'black',
+                    size=text_size)
+
+    return ax
+
+
+def evaluateSegmentation(y_true_array, y_pred_array, num_classes, classes=None, text_size=12):
+    """
+    Evaluate semantic segmentation performance with multiple metrics and confusion matrix.
+    
+    Parameters
+    ----------
+    y_true_array : np.ndarray
+        Ground-truth labels (2D array).
+    y_pred_array : np.ndarray
+        Predicted labels (2D array, same shape as y_true_array).
+    num_classes : int
+        Number of classes (1 = binary segmentation).
+    classes : list, optional
+        List of class names for confusion matrix display.
+    text_size : int, optional
+        Font size for confusion matrix text.
+    
+    Returns
+    -------
+    results : dict
+        Dictionary containing accuracy, precision, recall, f1, IoU, and Dice scores.
+    """
+    # Ensure matching shapes
+    if y_true_array.shape != y_pred_array.shape:
+        raise ValueError(f"❌ Shape mismatch: y_true {y_true_array.shape}, y_pred {y_pred_array.shape}")
+
+    # Flatten arrays
+    y_true = y_true_array.ravel()
+    y_pred = y_pred_array.ravel()
+
+    # -------- Metrics --------
+    acc = accuracy_score(y_true, y_pred)
+    prec = precision_score(y_true, y_pred, average='weighted', zero_division=0)
+    rec = recall_score(y_true, y_pred, average='weighted', zero_division=0)
+    f1 = f1_score(y_true, y_pred, average='weighted', zero_division=0)
+    iou = jaccard_score(y_true, y_pred, average='weighted', zero_division=0)
+
+    # Dice coefficient (macro-average)
+    dice_scores = []
+    for c in np.unique(y_true):
+        y_true_c = (y_true == c).astype(np.uint8)
+        y_pred_c = (y_pred == c).astype(np.uint8)
+        inter = np.sum(y_true_c * y_pred_c)
+        denom = np.sum(y_true_c) + np.sum(y_pred_c)
+        dice_c = (2 * inter / denom) if denom > 0 else 0.0
+        dice_scores.append(dice_c)
+    dice_macro = np.mean(dice_scores)
+
+    # -------- Print results --------
+    print("✅ Evaluation completed. Metrics below are averaged across all classes.")
+    print(f"📊 Overall Accuracy (all classes): {acc:.4f}")
+    print(f"📊 Precision (weighted): {prec:.4f}")
+    print(f"📊 Recall (weighted): {rec:.4f}")
+    print(f"📊 F1-score (weighted): {f1:.4f}")
+    print(f"📊 IoU (weighted): {iou:.4f}")
+    print(f"📊 Dice Coefficient (macro): {dice_macro:.4f}")
+
+    # -------- Confusion matrix --------
+    fig, ax = plt.subplots(figsize=(6,6))
+    # Here we call YOUR function, which you already defined separately
+    plotConfusionMatrix(y_true, y_pred, text_size=text_size, classes=classes, ax=ax)
+    plt.show()
+
+    # Return metrics for further use
+    return {
+        "accuracy": acc,
+        "precision_weighted": prec,
+        "recall_weighted": rec,
+        "f1_weighted": f1,
+        "iou_weighted": iou,
+        "dice_macro": dice_macro,
+        "dice_per_class": dict(zip(np.unique(y_true), dice_scores))
+    }
 
 # -
 
