@@ -793,6 +793,7 @@ def evaluateSegmentation(y_true_array, y_pred_array, num_classes, classes=None, 
     dice_macro = np.mean(dice_scores)
 
     # -------- Print results --------
+    print("========================== Accuracy Metrics ================================")
     print("✅ Evaluation completed. Metrics below are averaged across all classes.")
     print(f"📊 Overall Accuracy (all classes): {acc:.4f}")
     print(f"📊 Precision (weighted): {prec:.4f}")
@@ -800,6 +801,8 @@ def evaluateSegmentation(y_true_array, y_pred_array, num_classes, classes=None, 
     print(f"📊 F1-score (weighted): {f1:.4f}")
     print(f"📊 IoU (weighted): {iou:.4f}")
     print(f"📊 Dice Coefficient (macro): {dice_macro:.4f}")
+    print("\n")
+    print("\nConfusion matrix:")
 
     # -------- Confusion matrix --------
     fig, ax = plt.subplots(figsize=(6,6))
