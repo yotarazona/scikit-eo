@@ -733,7 +733,7 @@ def plotConfusionMatrix(y_true, y_pred, text_size=12, classes=None, ax=None, cma
     # Annotate each cell
     for i in range(n_classes):
         for j in range(n_classes):
-            ax.text(j, i, f'{cm[i,j]}',
+            ax.text(i, j, f'{cm[i,j]}',
                     ha='center', va='center',
                     color='white' if cm[i,j] > threshold else 'black',
                     size=text_size)
