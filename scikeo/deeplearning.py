@@ -284,9 +284,6 @@ def make_mean_iou_metric(num_classes):
     return mean_iou_metric
 
 
-# ==============================
-# UNET TRAINING (binary and multiclass)
-# ==============================
 def trainUnet(X_train, y_train, input_shape, num_classes,
                dropout_rate=0.2, learning_rate=1e-4, batch_size=16,
                epochs=50, validation_data=None, validation_split=0.0,
@@ -295,78 +292,52 @@ def trainUnet(X_train, y_train, input_shape, num_classes,
                save_best_model=True, model_path="best_model.keras"):
     """
     Train a U-Net model for binary or multiclass semantic segmentation.
-
-    Parameters
-    ----------
-    X_train : np.ndarray
-        Training feature patches of shape (N, H, W, C).
-    y_train : np.ndarray
-        Training labels of shape (N, H, W, 1) for binary
-        or (N, H, W) with integer class labels for multiclass.
-    input_shape : tuple
-        Shape of input tensors (H, W, C).
-    num_classes : int
-        Number of output classes. Use 1 for binary segmentation.
-    dropout_rate : float, optional
-        Dropout rate for regularization (default=0.2).
-    learning_rate : float, optional
-        Learning rate for Adam optimizer (default=1e-4).
-    batch_size : int, optional
-        Number of samples per gradient update (default=16).
-    epochs : int, optional
-        Number of training epochs (default=50).
-    validation_data : tuple, optional
-        Tuple (X_val, y_val) used for validation. If None,
-        a split from training data can be created with `validation_split`.
-    validation_split : float, optional
-        Fraction of training data reserved for validation if
-        `validation_data` is not provided (default=0.0).
-    data_augmentation : bool, optional
-        If True, applies random flips and rotations for augmentation
-        (default=False).
-    normalize : bool, optional
-        If True, applies per-band normalization using StandardScaler (default=True).
-    fill_nulls : bool, optional
-        If True, replaces NaN values with `null_value` (default=True).
-    null_value : float, optional
-        Value used to replace NaN values (default=0.0).
-    save_best_model : bool, optional
-        If True, saves the best model according to validation IoU (default=True).
-    model_path : str, optional
-        File path to save the best model (default="best_model.keras").
-
-    Returns
-    -------
-    model : tensorflow.keras.Model
-        The trained U-Net model.
-    history : keras.callbacks.History
-        Training history with loss and metric evolution.
+    NOTE: For multiclass, if y contains NaN (nodata), an extra background class is added internally.
     """
-    
+
     print(f"📊 Shape of X_train: {X_train.shape}")
     print(f"📊 Shape of y_train: {y_train.shape}")
-    print(f"🎯 Number of classes: {num_classes}")
+    print(f"🎯 Number of (real) classes: {num_classes}")
 
     # -------- Preprocessing --------
     X = X_train.astype(np.float32, copy=True)
     y = y_train.astype(np.float32, copy=True)
 
-    # 1) Replace NaN in X and y with specified null_value
+    # Detect nodata in y BEFORE replacing NaNs
+    has_nodata_in_y = bool(np.isnan(y).any())
+    effective_num_classes = num_classes
+    nodata_class = None
+
+    # For multiclass only: auto-add background class if y has NaN
+    if num_classes > 1 and has_nodata_in_y:
+        effective_num_classes = num_classes + 1
+        nodata_class = effective_num_classes - 1  # last channel reserved for nodata/background
+        print(f"🟦 Detected NaN in y -> adding background class internally: {effective_num_classes} classes (bg={nodata_class})")
+    else:
+        print("🟩 No NaN detected in y (or binary) -> no extra background class added")
+
+    # Replace NaNs: X -> null_value; y -> nodata_class (multiclass) or null_value (binary/no-nodata)
     if fill_nulls:
         X[np.isnan(X)] = null_value
-        y[np.isnan(y)] = null_value
-        print("✅ Null values replaced with 0 in X and y")
+
+        if num_classes > 1 and has_nodata_in_y:
+            # Map y NaN to the extra background class
+            y[np.isnan(y)] = float(nodata_class)
+        else:
+            # Binary or no-nodata multiclass: map NaN to null_value
+            y[np.isnan(y)] = null_value
+
+        print(f"✅ NaNs handled: X NaN -> {null_value} | y NaN -> {nodata_class if (num_classes>1 and has_nodata_in_y) else null_value}")
 
     # 2) Normalize X only, band by band
     if normalize:
-        patches, H, W, C = X.shape  # batch, height, width, channels
+        patches, H, W, C = X.shape
         for i in range(C):
             band = X[:, :, :, i]
             band_norm = StandardScaler().fit_transform(band.reshape(-1, 1)).reshape(patches, H, W)
             X[:, :, :, i] = band_norm
         print("✅ Normalization applied band by band with StandardScaler")
 
-    # Quick check
     print('Values in labels, min: %d & max: %d' % (np.min(y), np.max(y)))
 
     # -------- Validation split --------
@@ -383,20 +354,22 @@ def trainUnet(X_train, y_train, input_shape, num_classes,
     # -------- Labels preparation --------
     def prepare_labels(y_arr, n_classes):
         if n_classes > 1:
-            # Ensure integer labels in range 0..C-1 before one-hot encoding
+            # Ensure integer labels in range 0..(effective_num_classes-1) before one-hot encoding
             y_int = y_arr.astype("int32", copy=False)
             y_flat = y_int.reshape(-1)
             y_cat = to_categorical(y_flat, n_classes)  # (Npix, C)
-            return y_cat.reshape(y_arr.shape[0], y_arr.shape[1], y_arr.shape[2], n_classes)
+            y_cat = y_cat.reshape(y_arr.shape[0], y_arr.shape[1], y_arr.shape[2], n_classes)
+            return y_cat.astype(np.float32, copy=False)  # keep float32 for GPU stability
         else:
             # Binary: clip to [0,1] and keep single channel
             y_bin = np.clip(y_arr, 0.0, 1.0).astype(np.float32, copy=False)
             return y_bin
 
-    y_cat = prepare_labels(y, num_classes)
+    y_cat = prepare_labels(y, effective_num_classes)
+
     val_data = None
     if y_val is not None:
-        y_val_cat = prepare_labels(y_val, num_classes)
+        y_val_cat = prepare_labels(y_val, effective_num_classes)
         val_data = (X_val, y_val_cat)
 
     print(f"📊 Final X_train shape: {X.shape}")
@@ -446,23 +419,26 @@ def trainUnet(X_train, y_train, input_shape, num_classes,
         out_channels = 1
         activation = 'sigmoid'
         loss = 'binary_crossentropy'
+        metric_num_classes = 1
     else:
-        out_channels = num_classes
+        out_channels = effective_num_classes  # may include extra background
         activation = 'softmax'
         loss = 'categorical_crossentropy'
+        metric_num_classes = effective_num_classes
 
     outputs = Conv2D(out_channels, 1, activation=activation)(c7)
 
     # -------- Compilation --------
-    mean_iou_metric = make_mean_iou_metric(num_classes)
+    mean_iou_metric = make_mean_iou_metric(metric_num_classes)
     model = Model(inputs=inputs, outputs=outputs)
-    model.compile(optimizer=Adam(learning_rate=learning_rate),
-                  loss=loss,
-                  metrics=['accuracy', mean_iou_metric]
+    model.compile(
+        optimizer=Adam(learning_rate=learning_rate),
+        loss=loss,
+        metrics=['accuracy', mean_iou_metric]
     )
-    print("✅ Model compiled successfully (monitor: val_mean_iou)")
+    print(f"✅ Model compiled successfully (effective classes: {out_channels}, monitor: val_mean_iou)")
 
-    # -------- Callbacks (monitor IoU, mode 'max') --------
+    # -------- Callbacks --------
     callbacks = []
     if save_best_model and val_data is not None:
         checkpoint = ModelCheckpoint(
@@ -478,18 +454,14 @@ def trainUnet(X_train, y_train, input_shape, num_classes,
     # -------- Training --------
     print("🚀 Starting training...")
     if data_augmentation:
-        # Simple and safe augmentation for multiband images
         def gen(Xa, ya, bs):
-            H, W = Xa.shape[1], Xa.shape[2]
             while True:
                 idx = np.random.randint(0, len(Xa), size=bs)
                 bx, by = Xa[idx].copy(), ya[idx].copy()
-                # Flips
                 if np.random.rand() < 0.5:
                     bx = np.flip(bx, axis=1); by = np.flip(by, axis=1)
                 if np.random.rand() < 0.5:
                     bx = np.flip(bx, axis=2); by = np.flip(by, axis=2)
-                # Rotations 0/90/180/270
                 k = np.random.randint(0, 4)
                 bx = np.rot90(bx, k=k, axes=(1, 2))
                 by = np.rot90(by, k=k, axes=(1, 2))
@@ -518,6 +490,7 @@ def trainUnet(X_train, y_train, input_shape, num_classes,
 
     return model, history
 
+
 # ==========================================
 # PREDICTION FUNCTIONS
 # ==========================================
@@ -526,30 +499,36 @@ def predictRaster(model, raster_path, patch_size=256, num_classes=1,
                    overlap=0):
     """
     Predicts over a complete raster file and reconstructs the original image.
-
-    Args:
-        model: Trained model (U-Net)
-        raster_path (str): Path to the .tif file for prediction
-        patch_size (int): Patch size used during training
-        num_classes (int): Number of classes of the model
-        output_path (str): Path to save the predicted raster (optional)
-        fill_nulls (bool): Whether to replace null values with null_value
-        null_value: Value to replace nulls
-        normalize (bool): Whether to apply normalization
-        overlap (int): Number of overlapping pixels between patches
-
-    Returns:
-        np.array: Predicted reconstructed image
+    NOTE: For multiclass, if input raster contains nodata, assumes model was trained with an extra background class.
     """
 
     print(f"Processing file: {raster_path}")
 
-    # Read raster metadata
+    # Read raster metadata + build nodata mask
     with rasterio.open(raster_path) as src:
         original_height, original_width = src.height, src.width
         transform = src.transform
         profile = src.profile
         nodata = src.nodata
+
+        b1 = src.read(1)
+        if nodata is not None:
+            # isclose is safer for extreme float nodata from GEE
+            nodata_mask = np.isclose(b1, nodata) | np.isnan(b1)
+        else:
+            nodata_mask = np.isnan(b1)
+
+    has_nodata = bool(nodata_mask.any())
+
+    # For multiclass: auto-add background channel if raster has nodata
+    if num_classes > 1 and has_nodata:
+        effective_num_classes = num_classes + 1
+        bg_class = effective_num_classes - 1
+        print(f"🟦 Detected nodata in input raster -> expecting background class internally (effective classes: {effective_num_classes}, bg={bg_class})")
+    else:
+        effective_num_classes = num_classes
+        bg_class = None
+        print("🟩 No nodata detected (or binary) -> no extra background class assumed")
 
     # Process raster into patches
     X_patches = processing(
@@ -563,16 +542,14 @@ def predictRaster(model, raster_path, patch_size=256, num_classes=1,
     if fill_nulls:
         print("Handling null values...")
         X_patches[np.isnan(X_patches)] = null_value
-
-        # Also handle infinities if present
         inf_mask = np.isinf(X_patches)
         X_patches[inf_mask] = null_value
 
     # Normalize if required
     if normalize:
-        patches, H, W, C = X_patches.shape  # batch, height, width, channels
+        patches, H, W, C = X_patches.shape
         for i in range(C):
-            band = X_patches[:, :, :, i]  # all samples for band i
+            band = X_patches[:, :, :, i]
             band_norm = StandardScaler().fit_transform(band.reshape(-1, 1)).reshape(patches, H, W)
             X_patches[:, :, :, i] = band_norm
         print("✅ Normalization applied to X")
@@ -583,11 +560,9 @@ def predictRaster(model, raster_path, patch_size=256, num_classes=1,
 
     # Process predictions
     if num_classes > 1:
-        # Multiclass: take the class with highest probability
-        y_pred_classes = np.argmax(y_pred, axis=3)
-        print(f"Predicted classes: {np.unique(y_pred_classes)}")
+        y_pred_classes = np.argmax(y_pred, axis=3).astype(np.int32)
+        print(f"Predicted classes (raw): {np.unique(y_pred_classes)}")
     else:
-        # Binary: apply threshold
         y_pred_classes = (y_pred > 0.5).astype(np.uint8).squeeze()
         print(f"Predicted classes: {np.unique(y_pred_classes)}")
 
@@ -599,6 +574,18 @@ def predictRaster(model, raster_path, patch_size=256, num_classes=1,
         patch_size,
         overlap=overlap
     )
+
+    # Convert background class (extra) to nodata in the final map
+    # and also enforce nodata where the input raster had nodata.
+    if num_classes > 1 and has_nodata:
+        reconstructed = reconstructed.astype(np.int32, copy=False)
+        reconstructed[reconstructed == bg_class] = 255  # remove background class from final output
+        reconstructed[nodata_mask] = 255                # enforce true nodata positions
+        reconstructed = reconstructed.astype(np.uint8, copy=False)
+    else:
+        reconstructed = reconstructed.astype(np.uint8, copy=False)
+        if has_nodata:
+            reconstructed[nodata_mask] = 255  # still enforce nodata if present
 
     # Save result if specified
     if output_path is not None:
@@ -783,9 +770,23 @@ def evaluateSegmentation(y_true_array, y_pred_array, num_classes, classes=None, 
     y_true = y_true_array.ravel()
     y_pred = y_pred_array.ravel()
 
-    y_true[np.isnan(y_true)] = 0
-    y_pred[np.isnan(y_pred)] = 0
-    
+    # Ignore nodata/NaN pixels instead of forcing them to class 0
+    nodata_value = 255  # change if your nodata is different
+
+    valid = np.ones_like(y_true, dtype=bool)
+    valid &= ~np.isnan(y_true)
+    valid &= ~np.isnan(y_pred)
+    valid &= (y_true != nodata_value)
+    valid &= (y_pred != nodata_value)
+
+    y_true = y_true[valid].astype(np.int32, copy=False)
+    y_pred = y_pred[valid].astype(np.int32, copy=False)
+
+    # Optional safety: keep only values within [0, num_classes-1]
+    in_range = (y_true >= 0) & (y_true < num_classes) & (y_pred >= 0) & (y_pred < num_classes)
+    y_true = y_true[in_range]
+    y_pred = y_pred[in_range]
+
     # -------- Metrics --------
     acc = accuracy_score(y_true, y_pred)
     prec = precision_score(y_true, y_pred, average='weighted', zero_division=0)
@@ -832,7 +833,3 @@ def evaluateSegmentation(y_true_array, y_pred_array, num_classes, classes=None, 
         "dice_macro": dice_macro,
         "dice_per_class": dict(zip(np.unique(y_true), dice_scores))
     }
-
-# -
-
-
