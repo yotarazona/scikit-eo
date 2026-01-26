@@ -54,9 +54,15 @@ def processing(raster_path, label_path = None, patch_size=256,
         height, width = src.height, src.width
         n_bands = src.count
         transform = src.transform
+        raster_nodata = src.nodata
 
     # Move bands to last axis
     raster_data = np.moveaxis(raster_data, 0, -1)  # (H, W, C)
+
+    # --- Convert raster nodata to NaN (band-wise) ---
+    if raster_nodata is not None:
+        raster_data = raster_data.astype(np.float32, copy=False)
+        raster_data[raster_data == raster_nodata] = np.nan
 
     # Step size considering overlap
     step = patch_size - overlap
@@ -88,7 +94,13 @@ def processing(raster_path, label_path = None, patch_size=256,
             label_data = src.read(1)
             label_profile = src.profile
             label_transform = src.transform
-
+            label_nodata = src.nodata
+            
+        # --- Convert label nodata to NaN ---
+        if label_nodata is not None:
+            label_data = label_data.astype(np.float32, copy=False)
+            label_data[label_data == label_nodata] = np.nan
+        
         if pad_h > 0 or pad_w > 0:
             if padding_mode == 'reflect':
                 label_data = np.pad(label_data, ((0, pad_h), (0, pad_w)), mode='reflect')
