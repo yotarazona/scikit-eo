@@ -741,7 +741,7 @@ def plotConfusionMatrix(y_true, y_pred, text_size=12, classes=None, ax=None, cma
     return ax
 
 
-def evaluateSegmentation(y_true_array, y_pred_array, num_classes, classes=None, text_size=12):
+def evaluateSegmentation(y_true_array, y_pred_array, num_classes, classes=None, text_size=12, fig_size = (7,7)):
     """
     Evaluate semantic segmentation performance with multiple metrics and confusion matrix.
     
@@ -805,7 +805,7 @@ def evaluateSegmentation(y_true_array, y_pred_array, num_classes, classes=None, 
     print("\nConfusion matrix:")
 
     # -------- Confusion matrix --------
-    fig, ax = plt.subplots(figsize=(6,6))
+    fig, ax = plt.subplots(figsize = fig_size)
     # Here we call YOUR function, which you already defined separately
     plotConfusionMatrix(y_true, y_pred, text_size=text_size, classes=classes, ax=ax)
     plt.show()
